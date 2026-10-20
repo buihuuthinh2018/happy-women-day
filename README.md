@@ -1,6 +1,6 @@
 # Nến & Hoa — Thiệp 20/10
 
-Frontend thuần HTML/CSS/JavaScript. Không cần backend, framework hoặc cài thư viện. Hình ảnh riêng theo concept, hoa minh họa SVG, nến CSS và giai điệu tổng hợp bằng Web Audio.
+Frontend thuần HTML/CSS/JavaScript. Không cần backend, framework hoặc cài thư viện. Mỗi cảnh chiếm một màn hình; vuốt lên/xuống, dùng phím mũi tên hoặc chấm điều hướng để chuyển cảnh.
 
 ## Chạy tại máy
 
@@ -22,6 +22,8 @@ Giữ nguyên cấu trúc và các trường của file mẫu:
 - `occasion`, `date`, `year`: ngày lễ hiển thị.
 - `hero`: tiêu đề, mô tả và đường dẫn ảnh bìa. Tiêu đề ngắn sẽ đẹp nhất trên điện thoại.
 - `candle`: tiêu đề, hướng dẫn và lời chúc sau khi thắp nến.
+- `candle.animation`, `candle.poster`: GIF nến đang cháy và ảnh nến chưa thắp. Đã có sẵn GIF 36 khung hình (~92 KB).
+- `music`: nguồn MP3, âm lượng và chế độ lặp; xem ví dụ bên dưới.
 - `wishes`: đúng 3 lời chúc, mỗi lời gồm `title`, `preview`, `message`.
 - `letter`: `salutation`, mảng `paragraphs` (1–20 đoạn), `closing`.
 - `memories`: để `[]` nếu chưa có ảnh; thêm tối đa 12 ảnh để tự hiện mục kỷ niệm.
@@ -37,11 +39,25 @@ Ví dụ mục ảnh:
 
 Ảnh nội bộ đặt trong `dist/assets/` rồi dùng đường dẫn `assets/ten-anh.jpg`. Đường dẫn ảnh trong JSON được tính từ URL của trang, không tính từ vị trí file JSON trên máy. Ảnh URL ngoài cần truy cập được công khai. File JSON tối đa 1 MB. Nội dung văn bản được đưa vào bằng textContent để không thực thi HTML.
 
+## Thêm nhạc MP3
+
+Đặt file tại `dist/assets/music.mp3`, rồi thay trường `music` trong JSON:
+
+```json
+"music": {
+  "src": "assets/music.mp3",
+  "volume": 0.4,
+  "loop": true
+}
+```
+
+Giữ `src` là chuỗi rỗng để dùng giai điệu mẫu tổng hợp bằng Web Audio. Sau khi tải xong tài nguyên, hộp chào hiện tên từ `recipient` cùng hiệu ứng pháo hoa. Bấm **Tiếp tục** để vào thiệp và bắt đầu phát nhạc theo cơ chế yêu cầu tương tác của trình duyệt. Nút tắt/bật lại nhạc treo ở góc trên; nhạc tự tắt khi rời tab.
+
 ## Trải nghiệm và truy cập
 
 - Tối ưu responsive ở 320 px trở lên, có safe-area iPhone, mục tiêu chạm lớn, không phụ thuộc hover.
-- Thắp/tắt nến, mở/gói từng lời chúc, thư dạng dialog hỗ trợ Escape và giữ focus.
-- Nhạc chỉ bật khi người xem bấm; tự tắt khi rời tab. Giai điệu tạo tại máy, không cần file âm thanh.
+- Thắp/tắt nến GIF, chọn hoa để mở lời nhắn, thư chia trang theo kích thước hiển thị. Không cuộn nội dung giữa các cảnh.
+- Hộp thư hỗ trợ Escape, nút chuyển trang và vuốt ngang. Cảnh không hoạt động được ẩn với trình đọc màn hình và không nhận focus.
 - Tôn trọng `prefers-reduced-motion`, hỗ trợ bàn phím, nhãn cho trình đọc màn hình.
 - Font Google Fonts có font hệ thống dự phòng; tài nguyên nội dung và ảnh chính nằm trong source.
 
@@ -52,3 +68,9 @@ Ví dụ mục ảnh:
 ## Kiểm tra
 
 Xem `QA.md` để biết kết quả kiểm tra và giới hạn thiết bị thực.
+
+## Deploy trên GitHub Pages
+
+Workflow `.github/workflows/pages.yml` kiểm tra mã và triển khai thư mục `dist/` khi push lên `main`. Trong Settings → Pages của repo, chọn Source **GitHub Actions**. GitHub Pages cho repo riêng tư phụ thuộc gói tài khoản; giữ nguyên quyền truy cập repo khi triển khai.
+
+Sau khi thêm MP3 hoặc cập nhật JSON, commit và push để workflow cập nhật trang. Các tài nguyên dùng đường dẫn tương đối để hoạt động dưới `/happy-women-day/`.

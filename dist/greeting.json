@@ -15,12 +15,26 @@
   "candle": {
     "title": "Thắp lên một điều ước.",
     "description": "Dành một khoảnh khắc cho riêng mình. Nghĩ về điều em mong, rồi chạm vào ngọn nến nhé.",
-    "litMessage": "Mong điều em vừa ước sẽ dịu dàng thành hiện thực."
+    "litMessage": "Mong điều em vừa ước sẽ dịu dàng thành hiện thực.",
+    "animation": "assets/candle-glow.gif",
+    "poster": "assets/candle-still.png"
   },
   "wishes": [
-    {"title": "Luôn được yêu thương", "preview": "Bằng tất cả những điều dịu dàng nhất.", "message": "Mong em luôn được lắng nghe, được thấu hiểu và được yêu thương theo cách khiến em thấy bình yên. Em xứng đáng với những điều tử tế, mỗi ngày."},
-    {"title": "Rực rỡ theo cách riêng", "preview": "Chẳng cần giống bất kỳ ai, em nhé.", "message": "Cứ mặc chiếc váy em thích, đi đến nơi em muốn và theo đuổi điều khiến mắt em sáng lên. Thế giới đẹp hơn vì có một người như em."},
-    {"title": "Bình yên trong tim", "preview": "Và có thật nhiều lý do để mỉm cười.", "message": "Mong những ngày bận rộn vẫn có một khoảng thảnh thơi cho em. Có một tách trà ấm, một giấc ngủ ngon, và một người luôn hỏi: hôm nay em thế nào?"}
+    {
+      "title": "Luôn được yêu thương",
+      "preview": "Bằng tất cả những điều dịu dàng nhất.",
+      "message": "Mong em luôn được lắng nghe, được thấu hiểu và được yêu thương theo cách khiến em thấy bình yên. Em xứng đáng với những điều tử tế, mỗi ngày."
+    },
+    {
+      "title": "Rực rỡ theo cách riêng",
+      "preview": "Chẳng cần giống bất kỳ ai, em nhé.",
+      "message": "Cứ mặc chiếc váy em thích, đi đến nơi em muốn và theo đuổi điều khiến mắt em sáng lên. Thế giới đẹp hơn vì có một người như em."
+    },
+    {
+      "title": "Bình yên trong tim",
+      "preview": "Và có thật nhiều lý do để mỉm cười.",
+      "message": "Mong những ngày bận rộn vẫn có một khoảng thảnh thơi cho em. Có một tách trà ấm, một giấc ngủ ngon, và một người luôn hỏi: hôm nay em thế nào?"
+    }
   ],
   "letter": {
     "salutation": "Gửi Linh, cô gái đặc biệt,",
@@ -32,5 +46,10 @@
     ],
     "closing": "Thương em, hôm nay và cả những ngày bình thường."
   },
-  "memories": []
+  "memories": [],
+  "music": {
+    "src": "",
+    "volume": 0.4,
+    "loop": true
+  }
 }

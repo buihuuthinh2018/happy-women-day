@@ -1,15 +1,9 @@
-# Kiểm tra Nến & Hoa
+# Kiểm tra phiên bản chuyển cảnh
 
-- `npm run check`: JSON mẫu hợp lệ, JavaScript đúng cú pháp, các tệp static bắt buộc tồn tại.
-- HTTP preview trả về thành công; ảnh concept WebP khoảng 205 KB.
-- Kiểm tra trực quan trong trình duyệt ở bố cục hẹp và khung nhúng 390 px: font tiếng Việt, tiêu đề, nút chính, ảnh vòm và dấu ngày hiển thị.
-- Thắp nến đổi trạng thái nhấn, lời chúc và mở đường dẫn tiếp theo.
-- Chọn hoa mở đúng lời chúc; đóng/gói lại được bằng cùng nút.
-- Mở phong thư hiển thị đầy đủ nội dung trong dialog có vùng cuộn; nút đóng hoạt động.
-- Nút nhạc chuyển trạng thái bật/tắt qua thao tác người xem.
-- Nhập JSON với người nhận Mai đổi tên trang, tên người nhận và lời mở thư.
-- Nhập JSON thiếu trường sender hiện lỗi và giữ nội dung trước đó.
+- `npm run check` chạy thành công: JSON mẫu, cú pháp hai file JavaScript và tài nguyên bắt buộc tồn tại.
+- GIF nến được tạo với 36 khung hình 480 × 480, dung lượng khoảng 92 KB, có ảnh tĩnh cho chế độ giảm chuyển động.
+- Cấu hình GitHub Actions chạy lại kiểm tra trước khi deploy thư mục `dist/`.
 
-Giới hạn: chưa thử trên iPhone vật lý/Safari; khung 390 px kiểm tra bố cục responsive, không mô phỏng toàn bộ hành vi Safari hay phần cứng. Khả năng chia sẻ gốc và rung tùy trình duyệt. Nhạc dùng Web Audio và cần thao tác của người xem.
+Phiên bản này thay bố cục cuộn cũ bằng các cảnh toàn màn hình, thêm hộp chào sau loading, chia trang thư và cấu hình MP3 trong JSON. Những kết quả kiểm thử giao diện của bố cục cũ không xác nhận phiên bản mới.
 
-Ảnh kiểm tra local nằm ở `qa/mobile-preview.png` (thư mục qa không nằm trong bản deploy).
+Giới hạn: kiểm thử tương tác trình duyệt của phiên bản mới chưa hoàn tất vì công cụ Computer Use đã dừng ở lượt trước. Chưa thử trên iPhone/Safari vật lý. Khi bổ sung MP3 thật, cần kiểm tra phát nhạc trên thiết bị đích sau nút Tiếp tục.
