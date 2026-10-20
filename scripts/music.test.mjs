@@ -46,3 +46,38 @@ test('original demo has distinct scores and no recording download',async()=>{
 test('legacy JSON without cue points keeps the full song continuous',async()=>{
   const f=fixture({config:{src:'a.mp3',loop:false}});await f.score.play();assert.equal(f.sources[0].offset,0);assert.equal(f.sources[0].loop,false);assert.equal(f.ramps.at(-1).value,1);f.score.setCue('build');await tick();f.score.setCue('chorus');await tick();f.score.setCue('outro');await tick();assert.equal(f.sources.length,1);assert.equal(f.ramps.at(-1).value,1);assert.equal(f.score.activePhase,'outro');f.sources[0].onended();assert.equal(f.score.playing,false);f.score.dispose();
 });
+
+test('full song resumes at paused audio time across scenes and repeated toggles',async()=>{
+  const f=fixture({config:{src:'a.mp3',loop:false}});
+  await f.score.play();f.context.currentTime=12.75;f.score.stop();
+  assert.equal(f.sources[0].stoppedAt,12.75);
+  f.context.currentTime=25;f.score.stop();f.score.setCue('chorus');
+  await f.score.play();assert.equal(f.sources[1].offset,12.75);
+  assert.equal(f.sources[1].stoppedAt,62.25);
+  f.context.currentTime=27;f.score.stop();f.context.currentTime=40;
+  await f.score.play();assert.equal(f.sources[2].offset,14.75);
+  f.score.dispose();assert.equal(f.score.positions.size,0);
+  const fresh=fixture({config:{src:'a.mp3',loop:false}});
+  await fresh.score.play();assert.equal(fresh.sources[0].offset,0);fresh.score.dispose();
+});
+
+test('pause near the end resumes remaining time and a finished song does not restart',async()=>{
+  const f=fixture({config:{src:'a.mp3',loop:false}});
+  await f.score.play();f.context.currentTime=49.8;f.score.stop();
+  f.context.currentTime=60;await f.score.play();
+  assert.equal(f.sources[1].offset,49.8);assert.ok(Math.abs(f.sources[1].stoppedAt-60.2)<.001);
+  f.context.currentTime=60.2;f.sources[1].onended();
+  await f.score.play();assert.equal(f.sources.length,2);assert.equal(f.score.playing,false);f.score.dispose();
+});
+
+test('looping cue resumes at its wrapped position',async()=>{
+  const f=fixture();await f.score.play();f.context.currentTime=19;f.score.stop();
+  f.context.currentTime=30;await f.score.play();assert.equal(f.sources[1].offset,3);f.score.dispose();
+});
+
+test('rapid pause and resume during decode starts one source only',async()=>{
+  let finish;const f=fixture({loadBytes:()=>new Promise(resolve=>finish=resolve)});
+  const first=f.score.play();await tick();f.score.stop();const second=f.score.play();
+  finish(new ArrayBuffer(8));await Promise.all([first,second]);
+  assert.equal(f.sources.length,1);assert.equal(f.sources[0].offset,0);f.score.dispose();
+});

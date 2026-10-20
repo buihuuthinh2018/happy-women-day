@@ -51,13 +51,13 @@ Ví dụ mục ảnh:
 }
 ```
 
-Giữ `src` là chuỗi rỗng để dùng giai điệu mẫu tổng hợp bằng Web Audio. Sau khi tải xong tài nguyên, hộp chào hiện tên từ `recipient` cùng hiệu ứng pháo hoa. Bấm **Tiếp tục** để vào thiệp và bắt đầu phát nhạc theo cơ chế yêu cầu tương tác của trình duyệt. Nút tắt/bật lại nhạc treo ở góc trên; nhạc tự tắt khi rời tab.
+Giữ `src` là chuỗi rỗng để dùng giai điệu mẫu tổng hợp bằng Web Audio. Sau khi tải xong tài nguyên, hộp chào hiện tên từ `recipient` cùng hiệu ứng pháo hoa. Bấm **Tiếp tục** để vào thiệp và bắt đầu phát nhạc theo cơ chế yêu cầu tương tác của trình duyệt. Nút tắt/bật lại nhạc treo ở góc trên; nhạc tự tạm dừng khi rời tab.
 
 ### Bản nhạc đang sử dụng
 
 Trang dùng bản MP3 đầy đủ **Ánh nắng của anh** do người gửi cung cấp, dài khoảng 4 phút 23 giây (~4,39 MB). File nằm ở `dist/assets/anh-nang-cua-anh-full.mp3` và được sao chép nguyên vẹn từ file gốc.
 
-Sau loading, người xem bấm **Tiếp tục** để phát từ giây 0. Bài hát chạy liên tục qua các cảnh và các trang thư, giữ nguyên âm lượng, không nhảy đoạn hoặc tự chuyển về nền kết. `music.cues` đặt là `null`, `ambientSrc` để trống và `loop` là `false` để phát một lần trọn bài. Nút tắt/bật nhạc và việc tự tắt khi rời tab vẫn hoạt động; bấm bật lại sẽ phát lại bài từ đầu.
+Sau loading, người xem bấm **Tiếp tục** để phát từ giây 0. Bài hát chạy liên tục qua các cảnh và các trang thư, giữ nguyên âm lượng, không nhảy đoạn hoặc tự chuyển về nền kết. `music.cues` đặt là `null`, `ambientSrc` để trống và `loop` là `false` để phát một lần trọn bài. Nút tắt nhạc tạm dừng ngay tại vị trí đang nghe; bấm bật lại tiếp tục đúng vị trí đó, kể cả khi đã chuyển cảnh hoặc trang thư. Rời tab cũng tạm dừng và có thể bật lại để tiếp tục. Vị trí chỉ lưu trong bộ nhớ của lần mở trang, không lưu vào trình duyệt; tải lại hoặc mở trang mới sẽ phát từ đầu. Khi đã phát hết, bài hát không tự khởi động lại.
 
 `letter.highlight` vẫn giữ trang lời nhắn riêng và hiệu ứng chữ. Trang này không điều khiển vị trí nhạc trong cấu hình hiện tại.
 

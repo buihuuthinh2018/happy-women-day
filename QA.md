@@ -23,3 +23,7 @@ Kiểm tra lật thư trên Chromium/Edge và WebKit ở 390 × 844, 375 × 667,
 Kiểm tra cảm ứng qua Chromium CDP: vuốt trái/phải thực, quay lại bằng nút, bàn phím và đổi kích thước giữa hiệu ứng đều qua kiểm tra. WebKit desktop Windows không cung cấp Web Audio; lượt WebKit kiểm tra cử chỉ/hiển thị và thông báo dự phòng khi không phát được nhạc, không xác nhận phát MP3 trên Safari.
 
 Giới hạn: chưa thử trên iPhone/Safari vật lý; không thể kiểm thử cử chỉ chuyển ứng dụng của iOS bằng trình duyệt desktop. Cần xác nhận thao tác mép màn hình và âm lượng trên thiết bị đích.
+
+Cập nhật tiếp tục nhạc: tổng cộng 19 kiểm tra tự động đã qua, gồm tiếp tục tại vị trí dừng qua nhiều lần bật/tắt, chuyển cảnh khi tạm dừng, vị trí vòng lặp, thời gian còn lại gần cuối bài, không phát lại bài đã kết thúc và bật/tắt trong lúc đang giải mã.
+
+Kiểm tra MP3 thực bằng Chromium/Edge tại 390 × 844: tạm dừng ở 1,56 giây, mở thư khi đang dừng rồi bật lại từ đúng 1,56 giây; dừng lần hai và bật từ nút ngoài thư vẫn giữ vị trí. Sự kiện ẩn tab được mô phỏng để kiểm tra tạm dừng/tiếp tục; tải lại trang phát từ giây 0. Không có lỗi JavaScript. Chưa xác nhận hành vi âm thanh trên iPhone vật lý.

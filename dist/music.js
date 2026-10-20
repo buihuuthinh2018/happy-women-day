@@ -63,7 +63,7 @@
       this.config=config;this.loadBytes=loadBytes;this.onState=onState;this.onError=onError;
       this.contextFactory=contextFactory||(()=>new (window.AudioContext||window.webkitAudioContext)());
       this.schedule=schedule;this.unschedule=unschedule;
-      this.desired='ambient';this.playing=false;this.voices=new Set();this.buffers=new Map();this.session=0;this.revision=0;
+      this.desired='ambient';this.playing=false;this.voices=new Set();this.buffers=new Map();this.positions=new Map();this.session=0;this.revision=0;
     }
     setCue(phase) {
       if(!PHASES.includes(phase))throw Error('Unknown music cue');
@@ -83,11 +83,18 @@
       } catch(error) {if(session===this.session)this.fail(error);}
     }
     stop() {
+      // Buffer sources are single-use. Save the audio-clock position before
+      // stopping so a later button gesture can create a source at that point.
+      for(const voice of this.voices)if(!voice.retiring){
+        const elapsed=Math.max(0,this.ctx.currentTime-voice.startedAt);
+        const position=voice.offset+elapsed;
+        this.positions.set(voice.key,voice.loop?voice.start+(position-voice.start)%(voice.end-voice.start):Math.min(position,voice.end));
+      }
       this.playing=false;this.session++;this.revision++;
-      for(const voice of this.voices)this.retire(voice,.12);
+      for(const voice of this.voices)this.retire(voice,0);
       this.onState(false);
     }
-    dispose() {this.stop();this.ctx?.close?.().catch(()=>{});this.buffers.clear();}
+    dispose() {this.stop();this.positions.clear();this.ctx?.close?.().catch(()=>{});this.buffers.clear();}
     fail(error) {this.stop();this.onError(error);}
     retire(voice,fade) {
       if(voice.retiring)return;voice.retiring=true;
@@ -97,7 +104,7 @@
       if(voice.gain.gain.cancelAndHoldAtTime)voice.gain.gain.cancelAndHoldAtTime(now);
       else {voice.gain.gain.cancelScheduledValues(now);voice.gain.gain.setValueAtTime(voice.gain.gain.value,now);}
       voice.gain.gain.linearRampToValueAtTime(0,now+fade);
-      try{voice.source.stop(now+fade+.015);}catch{}
+      try{voice.source.stop(now+fade+(fade? .015:0));}catch{}
     }
     async getBuffer(path,phase) {
       const key=path||`demo:${phase}`;
@@ -120,15 +127,19 @@
         const cue=path?this.config.cues?.[phase]:null;
         const start=cue?.start??0,end=cue?.end??buffer.duration;
         if(start>=buffer.duration||end>buffer.duration+.025)throw Error(`Mốc ${phase} nằm ngoài độ dài file nhạc.`);
+        const segmented=!path||Boolean(this.config.cues);
+        const key=segmented?`${path}:${phase}`:path;
+        const offset=this.positions.get(key)??start;
+        // A completed recording stays completed for this visit.
+        if(offset>=end){this.playing=false;this.onState(false);return;}
         const source=this.ctx.createBufferSource(),gain=this.ctx.createGain(),now=this.ctx.currentTime;
         const fade=Math.min(this.config.crossfade??1.1,(end-start)/3);
-        const segmented=!path||Boolean(this.config.cues);
         const loop=segmented?phase!=='chorus':this.config.loop!==false;
         source.buffer=buffer;source.loop=loop;source.loopStart=start;source.loopEnd=Math.min(end,buffer.duration);
         const level=segmented?{ambient:.48,build:.62,chorus:1,outro:.45}[phase]:1;
         gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(level,now+fade);
         source.connect(gain);gain.connect(this.master);
-        const voice={source,gain,revision,path,retiring:false};
+        const voice={source,gain,revision,path,key,offset,start,end,loop,startedAt:now,retiring:false};
         for(const old of this.voices)this.retire(old,fade);
         this.voices.add(voice);
         source.onended=()=>{
@@ -136,11 +147,11 @@
           source.disconnect();gain.disconnect();this.voices.delete(voice);
           if(!voice.retiring&&this.playing&&revision===this.revision){
             if(phase==='chorus'&&segmented)this.transition('outro');
-            else if(!loop)this.stop();
+            else if(!loop){this.positions.set(key,end);this.stop();}
           }
         };
-        source.start(now,start);if(!loop)source.stop(now+(end-start));
-        if(phase==='chorus'&&segmented)voice.outroTimer=this.schedule(()=>{if(this.playing&&!voice.retiring&&revision===this.revision)this.transition('outro');},Math.max(0,end-start-fade)*1000);
+        source.start(now,offset);if(!loop)source.stop(now+(end-offset));
+        if(phase==='chorus'&&segmented)voice.outroTimer=this.schedule(()=>{if(this.playing&&!voice.retiring&&revision===this.revision)this.transition('outro');},Math.max(0,end-offset-fade)*1000);
         this.activePhase=phase;
       } catch(error) {if(this.playing&&revision===this.revision)this.fail(error);}
     }
