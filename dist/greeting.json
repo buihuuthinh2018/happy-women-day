@@ -44,12 +44,26 @@
       "Ngày 20/10, mong em không chỉ được nhận hoa, mà còn nhận được sự trân trọng. Mong em có đủ can đảm để sống với điều mình yêu, đủ bình yên để nghỉ ngơi khi mỏi, và luôn nhớ rằng: em xứng đáng được yêu thương, chẳng cần phải cố gắng trở thành ai khác.",
       "Chúc em một ngày ngập tràn hạnh phúc. Và nhiều, thật nhiều ngày sau cũng thế."
     ],
-    "closing": "Thương em, hôm nay và cả những ngày bình thường."
+    "closing": "Thương em, hôm nay và cả những ngày bình thường.",
+    "highlight": {
+      "afterParagraph": 1,
+      "text": "Em xứng đáng được yêu thương. Bằng những điều tử tế, những cái ôm thật lòng, và cả một người luôn muốn thấy em mỉm cười."
+    }
   },
   "memories": [],
   "music": {
     "src": "",
     "volume": 0.4,
-    "loop": true
+    "loop": true,
+    "ambientSrc": "",
+    "crossfade": 1.1,
+    "cues": null,
+    "credit": {
+      "title": "Giai điệu Nến & Hoa",
+      "performer": "",
+      "composer": "",
+      "sourceUrl": "",
+      "note": "Nhạc mẫu không lời, tạo riêng cho tấm thiệp."
+    }
   }
 }

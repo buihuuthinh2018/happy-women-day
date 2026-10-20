@@ -1,6 +1,6 @@
 let scenes=[],sceneIndex=0,transitioning=false,started=false,assetUrls=new Map(),assetFailures=[],memoryIndex=0;
 let readerPages=[],readerIndex=0,readerKind='',readerHeading='',readerClosing='';
-let musicPlaying=false,audioContext,master,musicTimer,noteIndex=0,musicElement,musicBusy=false;
+let musicPlaying=false,score;
 let fireworksFrame,fireworksTimer,resizeTimer;
 const sceneNames={home:'Lời mở đầu',candle:'Ngọn nến',wishes:'Vườn lời chúc',memories:'Kỷ niệm',letter:'Lá thư',closing:'Thương gửi em'};
 const blobFor=url=>assetUrls.get(url)||safeImage(url);
@@ -35,6 +35,7 @@ function goScene(index,instant=false){
   $('scene-prev').disabled=index===0;$('scene-next').disabled=index===scenes.length-1;
   setText('scene-hint',index===scenes.length-1?'Vuốt xuống để xem lại':'Vuốt lên để tiếp tục');
   setText('scene-status',`Cảnh ${index+1} trên ${scenes.length}: ${sceneNames[next.id]}`);
+  if(started)score?.setCue(GreetingAudio.phaseFor(next.id));
   if(!instant)next.querySelector('h1,h2')?.focus({preventScroll:true});
   setTimeout(()=>{previous?.classList.remove('leaving-up','leaving-down');transitioning=false;},reducedMotion?50:800);
 }
@@ -85,23 +86,68 @@ function paginateReader(paragraphs){
   return pages.length?pages:[''];
 }
 let readerParagraphs=[];
+function buildReaderPages(paragraphs){
+  $('reader').classList.remove('is-highlight','is-credits');
+  setText('reader-signature',readerKind==='letter'?`${readerClosing}\n${content.sender}`:'Với tất cả yêu thương ♡');
+  const highlight=readerKind==='letter'?content.letter.highlight:null;
+  let afterHighlight=false;
+  const pages=[];
+  paragraphs.forEach((paragraph,index)=>{
+    $('reader').classList.remove('is-highlight');
+    pages.push(...paginateReader([paragraph]).map(text=>({text,kind:afterHighlight?'after':'body'})));
+    if(highlight&&highlight.afterParagraph===index){
+      $('reader').classList.add('is-highlight');
+      pages.push(...paginateReader([highlight.text]).map(text=>({text,kind:'highlight'})));
+      afterHighlight=true;
+    }
+  });
+  $('reader').classList.remove('is-highlight');
+  if(readerKind==='letter'&&content.music?.credit?.title){
+    const credit=content.music.credit;
+    const text=[credit.title,credit.performer&&`Thể hiện: ${credit.performer}.`,credit.composer&&`Sáng tác: ${credit.composer}.`,credit.note].filter(Boolean).join(' ');
+    pages.push(...paginateReader([text]).map(text=>({kind:'credits',text})));
+  }
+  return pages;
+}
 function openReader(kind,title,paragraphs){
   readerKind=kind;readerHeading=title;readerParagraphs=paragraphs;readerClosing=kind==='letter'?content.letter.closing:'';
   setText('reader-title',title);setText('reader-eyebrow',kind==='letter'?'MỘT LÁ THƯ NGÀY 20/10':'MỘT ĐÓA HOA · MỘT LỜI THƯƠNG');
   // Reserve signature height on every page so pagination remains stable on the last page.
   setText('reader-signature',kind==='letter'?`${readerClosing}\n${content.sender}`:'Với tất cả yêu thương ♡');
-  $('reader').showModal();readerPages=paginateReader(paragraphs);readerIndex=0;showReaderPage();
+  $('reader').classList.toggle('is-letter',kind==='letter');
+  $('reader').showModal();readerPages=buildReaderPages(paragraphs);readerIndex=0;showReaderPage();
 }
-function showReaderPage(){setText('reader-body',readerPages[readerIndex]);setText('reader-count',`${readerIndex+1} / ${readerPages.length}`);$('reader-prev').disabled=readerIndex===0;$('reader-next').disabled=readerIndex===readerPages.length-1;$('reader-signature').style.visibility=readerIndex===readerPages.length-1?'visible':'hidden';}
+function showReaderPage(){
+  const page=readerPages[readerIndex],body=$('reader-body');
+  $('reader').classList.toggle('is-highlight',page.kind==='highlight');
+  $('reader').classList.toggle('is-credits',page.kind==='credits');
+  setText('reader-title',page.kind==='credits'?'Giai điệu gửi em':page.kind==='highlight'?'Một điều muốn em nhớ…':readerHeading);
+  if(page.kind==='credits')renderMusicCredit(body,page.text);
+  else if(page.kind==='highlight'){
+    // Short phrases stay readable throughout; only their gentle arrival is animated.
+    body.replaceChildren(...page.text.split(/(?<=[,.;!?…])\s+/).map((text,index)=>{const span=document.createElement('span');span.textContent=text+' ';span.style.setProperty('--phrase-delay',`${index*.65+.4}s`);return span;}));
+  }else body.textContent=page.text;
+  const signaturePage=readerPages.findLastIndex(page=>page.kind!=='credits');
+  if(page.kind!=='credits')setText('reader-signature',readerKind==='letter'?`${readerClosing}\n${content.sender}`:'Với tất cả yêu thương ♡');
+  $('reader-signature').style.visibility=page.kind==='credits'||readerIndex===signaturePage?'visible':'hidden';
+  setText('reader-count',`${readerIndex+1} / ${readerPages.length}`);$('reader-prev').disabled=readerIndex===0;$('reader-next').disabled=readerIndex===readerPages.length-1;
+  score?.setCue(GreetingAudio.phaseFor(scenes[sceneIndex]?.id,readerKind,page.kind));
+}
+function renderMusicCredit(body,text){
+  const credit=content.music.credit;
+  body.textContent=text;setText('reader-signature','Một chút hoa. Một chút thương. ♡');
+  if(credit.sourceUrl){const link=document.createElement('a');link.href=safeImage(credit.sourceUrl);link.target='_blank';link.rel='noopener noreferrer';link.textContent='Nguồn nhạc ↗';link.className='credit-source';$('reader-signature').replaceChildren(link);}
+}
 function openLetter(){openReader('letter',content.letter.salutation,content.letter.paragraphs);petals(8);}
 $('open-letter').addEventListener('click',openLetter);$('envelope').addEventListener('click',openLetter);
 $('reader-prev').addEventListener('click',()=>{if(readerIndex>0){readerIndex--;showReaderPage();}});$('reader-next').addEventListener('click',()=>{if(readerIndex<readerPages.length-1){readerIndex++;showReaderPage();}});
 $('close-reader').addEventListener('click',()=>$('reader').close());
+$('reader').addEventListener('close',()=>{score?.setCue(GreetingAudio.phaseFor(scenes[sceneIndex]?.id));});
 $('reader').addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();$('reader-next').click();}else if(e.key==='ArrowLeft'){e.preventDefault();$('reader-prev').click();}});
 let readerTouch;
 $('reader').addEventListener('pointerdown',e=>{readerTouch={x:e.clientX,y:e.clientY};});
 $('reader').addEventListener('pointerup',e=>{if(!readerTouch)return;const dx=e.clientX-readerTouch.x,dy=e.clientY-readerTouch.y;readerTouch=null;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy))$(dx<0?'reader-next':'reader-prev').click();});
-window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if($('reader').open){readerPages=paginateReader(readerParagraphs);readerIndex=Math.min(readerIndex,readerPages.length-1);showReaderPage();}},200);});
+window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if($('reader').open){const oldKind=readerPages[readerIndex]?.kind;readerPages=buildReaderPages(readerParagraphs);if(oldKind==='highlight'||oldKind==='credits')readerIndex=Math.max(0,readerPages.findIndex(page=>page.kind===oldKind));else readerIndex=Math.min(readerIndex,readerPages.length-1);showReaderPage();}},200);});
 $('open-customize').addEventListener('click',()=>$('customize').showModal());$('close-customize').addEventListener('click',()=>$('customize').close());
 $('json-file').addEventListener('change',async e=>{
   const file=e.target.files[0];if(!file)return;
@@ -113,27 +159,21 @@ $('reset').addEventListener('click',async()=>{if(defaults){stopMusic();$('custom
 $('share').addEventListener('click',async()=>{try{if(navigator.share)await navigator.share({title:document.title,text:'Một chút hoa, một chút thương, dành cho em.',url:location.href});else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(location.href);notify('Đã sao chép đường dẫn để gửi món quà.');}else notify('Sao chép địa chỉ trên trình duyệt để gửi món quà nhé.');}catch(error){if(error.name!=='AbortError')notify('Em có thể sao chép địa chỉ trên trình duyệt để chia sẻ.');}});
 function validateExtras(data){
   for(const key of ['animation','poster'])if(data.candle[key])safeImage(data.candle[key]);
-  if(data.music!==undefined){if(!data.music||typeof data.music!=='object'||Array.isArray(data.music))throw Error('Kiểm tra trường music trong JSON.');if(typeof data.music.src!=='string')throw Error('music.src cần là đường dẫn MP3 hoặc chuỗi rỗng.');if(data.music.src)safeImage(data.music.src);if(data.music.volume!==undefined&&(!Number.isFinite(data.music.volume)||data.music.volume<0||data.music.volume>1))throw Error('music.volume cần nằm trong khoảng 0 đến 1.');if(data.music.loop!==undefined&&typeof data.music.loop!=='boolean')throw Error('music.loop cần là true hoặc false.');}
+  GreetingAudio.validateMusic(data.music);
+  if(data.music?.src)safeImage(data.music.src);
+  if(data.music?.ambientSrc)safeImage(data.music.ambientSrc);
+  if(data.music?.credit?.sourceUrl)safeImage(data.music.credit.sourceUrl);
+  const highlight=data.letter.highlight;
+  if(highlight!=null&&(!highlight||typeof highlight!=='object'||Array.isArray(highlight)||!Number.isInteger(highlight.afterParagraph)||highlight.afterParagraph<0||highlight.afterParagraph>=data.letter.paragraphs.length||typeof highlight.text!=='string'||!highlight.text.trim()||highlight.text.length>600))throw Error('Kiểm tra letter.highlight: vị trí đoạn và lời nhắn (tối đa 600 ký tự).');
 }
-function soundState(playing){musicPlaying=playing;$('sound').setAttribute('aria-pressed',String(playing));$('sound').setAttribute('aria-label',playing?'Tắt nhạc':'Bật lại nhạc');setText('sound-label',playing?'Tắt nhạc':'Bật lại');setText('sound-icon',playing?'♫':'♪');}
-const tune=[261.63,329.63,392,523.25,440,392,329.63,293.66,261.63,392,440,523.25,659.25,523.25,392,329.63];
-function playNote(){if(!musicPlaying||audioContext?.state!=='running')return;const t=audioContext.currentTime,o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=tune[noteIndex++%tune.length];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.1,t+.025);g.gain.exponentialRampToValueAtTime(.001,t+2.5);o.connect(g);g.connect(master);o.start(t);o.stop(t+2.6);o.onended=()=>{o.disconnect();g.disconnect();};}
-function stopMusic(){clearInterval(musicTimer);musicElement?.pause();if(master)master.gain.setTargetAtTime(0,audioContext.currentTime,.1);soundState(false);}
-async function startMusic(){
-  if(musicBusy)return;musicBusy=true;
-  try{
-    if(content.music?.src){
-      if(assetFailures.includes(content.music.src))throw Error('Tệp nhạc chưa tải được.');
-      if(!musicElement){musicElement=new Audio(blobFor(content.music.src));musicElement.loop=content.music.loop!==false;musicElement.volume=content.music.volume??.4;musicElement.addEventListener('ended',()=>soundState(false));musicElement.addEventListener('error',()=>{stopMusic();notify('Chưa phát được file nhạc. Em có thể thử bật lại.');});}
-      await musicElement.play();soundState(true);
-    }else{
-      if(!audioContext){const Context=window.AudioContext||window.webkitAudioContext;if(!Context)throw Error('Thiết bị chưa hỗ trợ nhạc.');audioContext=new Context();master=audioContext.createGain();master.gain.value=0;master.connect(audioContext.destination);}
-      await audioContext.resume();master.gain.setTargetAtTime((content.music?.volume??.4)*.65,audioContext.currentTime,.2);soundState(true);playNote();musicTimer=setInterval(playNote,950);
-    }
-  }catch(error){soundState(false);notify(error.message==='Tệp nhạc chưa tải được.'?'Nhạc chưa tải được. Món quà vẫn sẵn sàng cho em.':'Trình duyệt chưa phát nhạc. Em có thể chạm nút nhạc để thử lại.');}
-  finally{musicBusy=false;}
+function soundState(playing){musicPlaying=playing;for(const id of ['sound','reader-sound']){$(id).setAttribute('aria-pressed',String(playing));$(id).setAttribute('aria-label',playing?'Tắt nhạc':'Bật lại nhạc');}setText('sound-label',playing?'Tắt nhạc':'Bật lại');setText('sound-icon',playing?'♫':'♪');setText('reader-sound',playing?'♫ Tắt nhạc':'♪ Bật lại nhạc');}
+function stopMusic(){score?.stop();soundState(false);}
+function startMusic(){
+  if(!score)score=new GreetingAudio.AdaptiveScore({config:content.music||{src:''},loadBytes:async path=>{if(assetFailures.includes(path))throw Error('Tệp nhạc chưa tải được.');return (await fetch(blobFor(path))).arrayBuffer();},onState:soundState,onError:error=>{console.warn('Music playback:',error.message);notify('Chưa phát được nhạc. Em có thể tiếp tục đọc thư và thử nút nhạc sau.');}});
+  score.setCue($('reader').open?GreetingAudio.phaseFor(scenes[sceneIndex]?.id,readerKind,readerPages[readerIndex]?.kind):GreetingAudio.phaseFor(scenes[sceneIndex]?.id));
+  return score.play();
 }
-$('sound').addEventListener('click',()=>musicPlaying?stopMusic():startMusic());
+for(const id of ['sound','reader-sound'])$(id).addEventListener('click',()=>musicPlaying?stopMusic():startMusic());
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&musicPlaying)stopMusic();});
 $('continue').addEventListener('click',()=>{
   if(!content||$('continue').disabled)return;
@@ -154,16 +194,16 @@ async function preloadAsset(path){
   // Fetch to completion so the welcome screen never hands off to half-downloaded media.
   const response=await fetch(safeImage(path),{signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error(path);const blob=await response.blob();if(!blob.size)throw Error(path);
   const objectUrl=URL.createObjectURL(blob);
-  if(!/\.(mp3|wav|ogg|m4a)(\?|$)/i.test(path)&&path!==content?.music?.src){const image=new Image();image.src=objectUrl;try{await image.decode();}catch(error){URL.revokeObjectURL(objectUrl);throw error;}}
+  if(!/\.(mp3|wav|ogg|m4a)(\?|$)/i.test(path)&&path!==content?.music?.src&&path!==content?.music?.ambientSrc){const image=new Image();image.src=objectUrl;try{await image.decode();}catch(error){URL.revokeObjectURL(objectUrl);throw error;}}
   assetUrls.set(path,objectUrl);
 }
 async function prepareGift(data){
-  started=false;stopFireworks();musicElement?.pause();musicElement=null;assetFailures=[];
+  started=false;stopFireworks();score?.dispose();score=null;assetFailures=[];
   $('sound').hidden=true;$('continue').disabled=true;setText('continue','Đang chuẩn bị…');$('retry-loading').hidden=true;
   if(!$('welcome').open)$('welcome').showModal();
   setText('welcome-title','Đang gói một chút yêu thương…');setText('welcome-description','Đợi một chút để món quà được trọn vẹn nhé.');$('loading-progress').hidden=false;$('loading-status').hidden=false;$('loading-bar').style.width='0%';
   content=data;
-  const assets=[...new Set([data.hero.image,data.candle.animation||'assets/candle-glow.gif',data.candle.poster||'assets/candle-still.png','assets/candle-lit.png',...(data.memories||[]).map(m=>m.image),...(data.music?.src?[data.music.src]:[])])];
+  const assets=[...new Set([data.hero.image,data.candle.animation||'assets/candle-glow.gif',data.candle.poster||'assets/candle-still.png','assets/candle-lit.png',...(data.memories||[]).map(m=>m.image),...(data.music?.src?[data.music.src]:[]),...(data.music?.ambientSrc?[data.music.ambientSrc]:[])])];
   let complete=0;
   await Promise.all(assets.map(async path=>{try{await preloadAsset(path);}catch{assetFailures.push(path);}finally{complete++;$('loading-bar').style.width=`${complete/assets.length*100}%`;setText('loading-status',`Đã chuẩn bị ${complete} / ${assets.length} tài nguyên`);}}));
   if(document.fonts)await document.fonts.ready;

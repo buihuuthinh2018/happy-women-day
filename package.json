@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "start": "node scripts/serve.mjs",
-    "build": "node scripts/check.mjs",
-    "check": "node scripts/check.mjs"
+    "build": "npm run check",
+    "check": "node scripts/check.mjs && node --test scripts/music.test.mjs"
   }
 }

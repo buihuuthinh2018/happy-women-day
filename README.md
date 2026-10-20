@@ -10,7 +10,7 @@ npm run dev
 
 Mở http://localhost:5173. Trên iPhone cùng mạng Wi-Fi, dùng `http://<IP-LAN-của-máy>:5173`. Máy cần cho phép cổng 5173 qua firewall. Không mở index.html trực tiếp bằng file:// vì trình duyệt cần fetch JSON. Chia sẻ và clipboard phụ thuộc HTTPS/hỗ trợ trình duyệt; trang có thông báo thay thế.
 
-`npm run check` kiểm tra JSON mẫu, cú pháp JavaScript và các tài nguyên bắt buộc. `npm run build` chạy cùng kiểm tra; toàn bộ thư mục `dist/` đã là bản có thể deploy lên dịch vụ static hosting.
+`npm run check` kiểm tra JSON mẫu, cú pháp JavaScript, tài nguyên bắt buộc và các tình huống chuyển nhạc. `npm run build` chạy cùng kiểm tra; toàn bộ thư mục `dist/` đã là bản có thể deploy lên dịch vụ static hosting.
 
 ## Cá nhân hóa
 
@@ -52,6 +52,29 @@ Ví dụ mục ảnh:
 ```
 
 Giữ `src` là chuỗi rỗng để dùng giai điệu mẫu tổng hợp bằng Web Audio. Sau khi tải xong tài nguyên, hộp chào hiện tên từ `recipient` cùng hiệu ứng pháo hoa. Bấm **Tiếp tục** để vào thiệp và bắt đầu phát nhạc theo cơ chế yêu cầu tương tác của trình duyệt. Nút tắt/bật lại nhạc treo ở góc trên; nhạc tự tắt khi rời tab.
+
+### Nhạc theo từng khoảnh khắc
+
+Trang dùng bốn pha: `ambient` (cảnh đầu, nến, hoa), `build` (mở thư), `chorus` (trang lời nhắn trọng tâm), `outro` (phần thư sau cao trào và cảnh kết). Nhạc mẫu hiện tại được tạo riêng bằng Web Audio với bốn phối khí; không phải bản thu hoặc bản cover của **Ánh nắng của anh**.
+
+`letter.highlight` thêm một trang lời nhắn riêng sau đoạn thư được chọn; `afterParagraph` đếm từ 0. Ví dụ `1` nghĩa là sau đoạn thứ hai. Trang nhấn được phân trang theo kích thước màn hình, tôn trọng chế độ giảm chuyển động và không ép người xem chờ nhạc mới được chuyển tiếp.
+
+Khi có bản thu được phép sử dụng, đặt file vào `dist/assets/` rồi cấu hình:
+
+- `music.src`: file bản thu chính.
+- `music.ambientSrc`: file không lời dùng làm nền ở các cảnh đầu; để trống để dùng cùng `src`.
+- `music.cues`: bốn khóa `ambient`, `build`, `chorus`, `outro`, mỗi khóa có `start` và `end` tính bằng giây. Mốc của `ambient` tính trong `ambientSrc` khi có file này; ba mốc còn lại tính trong `src`.
+- `music.crossfade`: thời gian chuyển âm lượng giữa hai đoạn (0.15–4 giây), mặc định 1.1 giây. Điểm cắt cần chọn theo nhịp và theo đúng phiên bản bản thu; hệ thống không tự phát hiện điệp khúc.
+
+Các đoạn nền lặp trong lúc chờ người xem. Đoạn `chorus` phát một lần rồi chuyển về `outro`, tránh lặp lại lời hát khi người xem đọc lâu. Vuốt về trang trước sẽ chọn lại pha tương ứng. Thay đổi pha khi đã tắt nhạc chỉ ghi nhận vị trí; không tự bật âm thanh. Nút bật lại phát từ đầu đoạn hiện tại.
+
+`music.cues: null` giữ chế độ phát cả file liên tục (tương thích JSON cũ). Nhạc mẫu không có file vẫn dùng đủ bốn pha. Chưa đặt mốc giây cho Ánh nắng của anh vì chưa có bản thu để đo chính xác.
+
+### Ghi nguồn cuối lá thư
+
+`music.credit` có `title`, `performer`, `composer`, `sourceUrl`, `note`. Khi `title` có nội dung, cuối thư hiện trang ghi nguồn với liên kết nếu có. Điền thông tin đúng với bản thu thực tế; không ghi tên nghệ sĩ cho nhạc mẫu.
+
+Trang hiện chưa chứa MP3 Ánh nắng của anh. Chỉ tải và đưa vào repo công khai file có quyền sử dụng phù hợp; ghi nguồn không thay thế giấy phép. Bản thu chính thức: https://www.youtube.com/watch?v=-GgTYmhzviw ; tham khảo hướng dẫn của YouTube về việc ghi nguồn: https://support.google.com/youtube/answer/9783148 .
 
 ## Trải nghiệm và truy cập
 
