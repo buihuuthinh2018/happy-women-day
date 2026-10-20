@@ -1,0 +1,36 @@
+{
+  "recipient": "Linh",
+  "sender": "Một người luôn thương em",
+  "occasion": "Mừng ngày Phụ nữ Việt Nam",
+  "date": "20.10",
+  "year": "2026",
+  "hero": {
+    "eyebrow": "MỘT MÓN QUÀ NHỎ, DÀNH RIÊNG CHO EM",
+    "title": "Có những dịu dàng,",
+    "highlight": "chỉ dành cho em.",
+    "description": "Một ngọn nến thay lời ấm áp. Một đóa hoa thay điều muốn nói. Và một ngày thật đẹp, dành cho người con gái đặc biệt.",
+    "image": "assets/candles-roses.webp",
+    "imageAlt": "Hoa hồng phấn bên những ngọn nến lung linh trong ánh sáng ấm áp"
+  },
+  "candle": {
+    "title": "Thắp lên một điều ước.",
+    "description": "Dành một khoảnh khắc cho riêng mình. Nghĩ về điều em mong, rồi chạm vào ngọn nến nhé.",
+    "litMessage": "Mong điều em vừa ước sẽ dịu dàng thành hiện thực."
+  },
+  "wishes": [
+    {"title": "Luôn được yêu thương", "preview": "Bằng tất cả những điều dịu dàng nhất.", "message": "Mong em luôn được lắng nghe, được thấu hiểu và được yêu thương theo cách khiến em thấy bình yên. Em xứng đáng với những điều tử tế, mỗi ngày."},
+    {"title": "Rực rỡ theo cách riêng", "preview": "Chẳng cần giống bất kỳ ai, em nhé.", "message": "Cứ mặc chiếc váy em thích, đi đến nơi em muốn và theo đuổi điều khiến mắt em sáng lên. Thế giới đẹp hơn vì có một người như em."},
+    {"title": "Bình yên trong tim", "preview": "Và có thật nhiều lý do để mỉm cười.", "message": "Mong những ngày bận rộn vẫn có một khoảng thảnh thơi cho em. Có một tách trà ấm, một giấc ngủ ngon, và một người luôn hỏi: hôm nay em thế nào?"}
+  ],
+  "letter": {
+    "salutation": "Gửi Linh, cô gái đặc biệt,",
+    "paragraphs": [
+      "Hôm nay, cho phép mình gửi em một chút dịu dàng. Không phải điều gì lớn lao, chỉ là vài đóa hoa, một ngọn nến ấm và những lời vẫn luôn muốn nói.",
+      "Cảm ơn em vì đã là chính mình. Vì những lần mạnh mẽ dù trong lòng còn nhiều lo lắng, vì nụ cười làm một ngày bình thường bỗng trở nên đáng nhớ. Và vì cả những lúc em cho phép mình yếu mềm — điều đó cũng rất đẹp.",
+      "Ngày 20/10, mong em không chỉ được nhận hoa, mà còn nhận được sự trân trọng. Mong em có đủ can đảm để sống với điều mình yêu, đủ bình yên để nghỉ ngơi khi mỏi, và luôn nhớ rằng: em xứng đáng được yêu thương, chẳng cần phải cố gắng trở thành ai khác.",
+      "Chúc em một ngày ngập tràn hạnh phúc. Và nhiều, thật nhiều ngày sau cũng thế."
+    ],
+    "closing": "Thương em, hôm nay và cả những ngày bình thường."
+  },
+  "memories": []
+}

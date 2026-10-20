@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f2e9">
+  <meta name="description" content="Một ngọn nến, một đóa hoa và những lời dịu dàng dành riêng cho em. Chúc mừng ngày Phụ nữ Việt Nam 20/10.">
+  <title>Nến & Hoa · Dành riêng cho em</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Đến nội dung chính</a>
+  <header class="header wrap">
+    <a class="brand" href="#" aria-label="Nến và Hoa, về đầu trang"><span class="brand-flower">✳</span> nến <i>&</i> hoa<span class="brand-dot">.</span></a>
+    <nav aria-label="Điều hướng"><a href="#wishes">Lời chúc</a><a href="#letter">Lá thư</a></nav>
+    <button class="sound-button" id="sound" aria-pressed="false" aria-label="Bật giai điệu thư giãn"><span class="sound-bars"><i></i><i></i><i></i><i></i></span><span id="sound-label">Bật nhạc</span></button>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="tiny-line"></span><span id="hero-eyebrow">MỘT MÓN QUÀ NHỎ, DÀNH RIÊNG CHO EM</span></div>
+        <p class="to">Gửi <span id="recipient">Linh</span>, với tất cả yêu thương</p>
+        <h1 id="hero-title"><span id="title">Có những dịu dàng,</span><em id="highlight">chỉ dành cho em.</em></h1>
+        <p class="hero-description" id="hero-description"></p>
+        <a class="button primary" href="#candle">Thắp một ngọn nến <span aria-hidden="true">↗</span></a>
+        <div class="occasion"><span class="occasion-flower" aria-hidden="true">❋</span><span><strong id="occasion">Mừng ngày Phụ nữ Việt Nam</strong><small>Một ngày cho em. Muôn vàn yêu thương.</small></span></div>
+      </div>
+      <div class="hero-art">
+        <div class="arch"><img id="hero-image" src="assets/candles-roses.webp" alt="Hoa hồng bên ánh nến ấm áp" fetchpriority="high"><div class="image-vignette"></div><span class="art-caption">for you, with love</span></div>
+        <div class="date-stamp"><span id="date">20.10</span><small>HAPPY WOMEN'S DAY</small></div>
+        <div class="orbit-note"><span aria-hidden="true">✧</span> một chút hoa, một chút thương</div>
+        <span class="art-star star-one" aria-hidden="true">✧</span><span class="art-star star-two" aria-hidden="true">✧</span>
+      </div>
+      <a class="scroll-cue" href="#candle"><span aria-hidden="true">↓</span> CHẬM LẠI MỘT CHÚT, YÊU THƯƠNG NHIỀU HƠN</a>
+    </section>
+    <div class="poetry-strip" aria-hidden="true"><span>một ngọn nến ấm</span> ✧ <span>một đóa hoa xinh</span> ✧ <span>một người rất đáng yêu</span> ✧ <span>là em đó</span></div>
+    <section class="candle-section" id="candle" aria-labelledby="candle-title">
+      <div class="candle-inner wrap">
+        <div class="candle-copy reveal"><p class="eyebrow light">01 / MỘT CHÚT ẤM ÁP</p><h2 id="candle-title">Thắp lên<br><em>một điều ước.</em></h2><p id="candle-description"></p><p class="candle-status" id="candle-status" aria-live="polite">Ngọn nến đang chờ một cái chạm từ em.</p><a id="after-light" class="text-link" href="#letter" hidden>Điều dịu dàng tiếp theo đang đợi em <span aria-hidden="true">↗</span></a></div>
+        <div class="candle-stage">
+          <div class="candle-halo"></div><span class="candle-spark spark-a" aria-hidden="true">✧</span><span class="candle-spark spark-b" aria-hidden="true">✦</span>
+          <button class="candle-object" id="candle-toggle" aria-label="Thắp ngọn nến" aria-pressed="false"><span class="flame" aria-hidden="true"></span><span class="wick"></span><span class="wax"><span class="wax-drip"></span><span class="wax-label">a little light<br><i>for you</i><span>20 / 10</span></span></span><span class="candle-plate"></span></button>
+          <p class="touch-hint" id="touch-hint"><span aria-hidden="true">☝</span> Chạm vào nến để thắp sáng</p>
+        </div>
+      </div>
+    </section>
+    <section class="wishes-section wrap" id="wishes" aria-labelledby="wishes-title">
+      <div class="section-top reveal"><p class="eyebrow">02 / MỘT CHÚT HƯƠNG HOA</p><h2 id="wishes-title">Nếu lời chúc là hoa,<br><em>mình dành cả vườn cho em.</em></h2><p>Chạm một đóa hoa, nhận một lời thương.</p></div>
+      <div class="wish-grid" id="wish-grid"></div>
+      <p class="little-note">Vì em xứng đáng với mọi điều đẹp đẽ. <span aria-hidden="true">♡</span></p>
+    </section>
+    <section class="memories-section wrap" id="memories" hidden><p class="eyebrow">NHỮNG KHOẢNH KHẮC MUỐN GIỮ LẠI</p><h2>Một góc nhỏ <em>của chúng mình.</em></h2><div class="memory-grid" id="memory-grid"></div></section>
+    <section class="letter-section" id="letter" aria-labelledby="letter-title"><div class="letter-inner wrap reveal"><div class="letter-copy"><p class="eyebrow">03 / MỘT CHÚT THẬT LÒNG</p><h2 id="letter-title">Có vài điều,<br><em>mình muốn gửi em.</em></h2><p>Những lời đôi khi ngại nói thành câu,<br>hôm nay nằm gọn trong một lá thư.</p><button class="button primary" id="open-letter">Mở lá thư của em <span aria-hidden="true">↗</span></button></div><button class="envelope" id="envelope" aria-label="Mở lá thư dành cho em"><span class="envelope-paper">gửi em,<br><i>một chút thương…</i></span><span class="envelope-back"></span><span class="envelope-fold"></span><span class="wax-seal">♡</span><span class="envelope-note">a letter, just for you</span></button></div></section>
+    <section class="closing wrap reveal"><span class="closing-flower" aria-hidden="true">✳</span><p>Hoa có thể phai. Nến có thể tàn.</p><h2>Nhưng mong em luôn nhớ,<br><em>em xứng đáng được yêu thương.</em></h2><button class="text-link" id="share">Gửi chút dịu dàng này <span aria-hidden="true">↗</span></button><p class="signature">Với tất cả yêu thương, <span id="sender"></span></p></section>
+  </main>
+  <footer class="footer wrap"><a class="brand" href="#">nến <i>&</i> hoa.</a><span>Được gói bằng yêu thương · <span id="year">2026</span></span><details class="customize"><summary>Cá nhân hóa</summary><div class="customize-panel"><p>Thay tên, lời chúc và ảnh bằng file JSON của bạn. Dữ liệu chỉ được đọc trên thiết bị, áp dụng cho lần xem này.</p><a href="greeting.json" download="greeting-mau.json">Tải JSON mẫu ↓</a><label class="import-label" for="json-file">Nhập JSON của bạn ↑</label><input id="json-file" type="file" accept=".json,application/json"><button class="text-link" id="reset">Khôi phục nội dung mẫu</button></div></details></footer>
+  <dialog id="letter-dialog" aria-labelledby="letter-salutation"><button class="dialog-close" id="close-letter" aria-label="Đóng lá thư">×</button><div class="letter-sheet"><p class="eyebrow">MỘT LÁ THƯ NGÀY 20/10</p><span class="letter-flower" aria-hidden="true">❋</span><h2 id="letter-salutation"></h2><div id="letter-paragraphs"></div><p class="letter-closing" id="letter-closing"></p><p class="letter-sender" id="letter-sender"></p><span class="letter-end" aria-hidden="true">♡</span></div></dialog>
+  <div class="toast" role="status" aria-live="polite" id="toast"></div><div id="petals" aria-hidden="true"></div>
+  <noscript><p class="noscript">Hãy bật JavaScript để thắp nến, mở thư và đọc nội dung được cá nhân hóa.</p></noscript>
+</body>
+</html>
