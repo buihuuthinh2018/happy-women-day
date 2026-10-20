@@ -31,16 +31,14 @@
 .reader.is-lifting .reader-footer,.reader.is-lifting .reader-sound,.reader.is-lifting .dialog-close{animation:letter-controls .76s ease both}
 @keyframes letter-controls{0%,45%{opacity:0}100%{opacity:1}}
 .reader-paper{display:flex;flex:1;min-height:0;flex-direction:column;gap:13px;position:relative;transform-origin:center top;touch-action:pan-y pinch-zoom}
+.reader-slider{width:100%;flex:1;min-width:0;min-height:0;margin:0;touch-action:pan-y pinch-zoom}
+.reader-slider .swiper-wrapper{height:100%;transition-timing-function:cubic-bezier(.22,.65,.3,1)}
+.reader-slider .swiper-slide{overflow:hidden;text-align:left}
 .reader-footer{flex-shrink:0;position:relative;z-index:6}
 .reader-footer .inline-pager{gap:8px}
 .reader-footer .inline-pager button{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:20px;padding:0 5px}
 .reader-footer .inline-pager button span{font:10px var(--sans)}
 #reader-hint{font-size:8px;line-height:1.6;text-align:center;color:#9b8270;margin-top:2px}
-.page-turn-sheet{position:absolute;z-index:4;pointer-events:none;transform-style:preserve-3d;will-change:transform}
-.page-turn-front,.page-turn-back{position:absolute;inset:-5px -7px;border-radius:2px;background:#f9f4e8;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:3px 5px 18px #67452c30;overflow:hidden}
-.page-turn-front{padding:5px 7px}
-.page-turn-front::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#a38a6b24,transparent 14%,transparent 82%,#fff9ef88);pointer-events:none}
-.page-turn-back{transform:rotateY(180deg);background:linear-gradient(90deg,#e5d4bc,#f8f0df 22%,#efe1ca);display:grid;place-items:center;color:#c6aa89;font:45px Georgia}
 .envelope{perspective:850px}
 .envelope::before{content:'';position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 52%);background:linear-gradient(#d5b39b,#e3c7af);z-index:4;transform-origin:center top;backface-visibility:hidden;transition:transform .5s ease}
 .envelope.is-opening::before{transform:rotateX(170deg)}

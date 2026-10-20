@@ -9,7 +9,7 @@ new vm.Script(await readFile('dist/experience.js', 'utf8'));
 const musicContext={setTimeout,clearTimeout};
 vm.runInNewContext(await readFile('dist/music.js','utf8'),musicContext);
 musicContext.GreetingAudio.validateMusic(data.music);
-for (const file of ['dist/index.html','dist/styles.css','dist/assets/candles-roses.webp','dist/assets/candle-glow.gif','dist/assets/candle-still.png','dist/assets/candle-lit.png']) await access(file);
+for (const file of ['dist/index.html','dist/vendor/swiper-14.3.0.min.js','dist/vendor/swiper-14.3.0.min.css','dist/vendor/swiper-LICENSE.txt','dist/styles.css','dist/assets/candles-roses.webp','dist/assets/candle-glow.gif','dist/assets/candle-still.png','dist/assets/candle-lit.png']) await access(file);
 for (const source of [data.music?.src, data.music?.ambientSrc]) {
   if (source && !/^https?:\/\//i.test(source)) await access(`dist/${source.split(/[?#]/)[0]}`);
 }

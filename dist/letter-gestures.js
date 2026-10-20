@@ -6,7 +6,5 @@
     const top=Math.max(50,paper.top),bottom=Math.min(height-88,paper.bottom);
     return x>=left&&x<=right&&y>=top&&y<=bottom;
   }
-  function intent(dx,dy) {return Math.abs(dx)>14&&Math.abs(dx)>Math.abs(dy)*1.4;}
-  function forward(dx,dy,elapsed) {return elapsed<=1400&&dx<=-55&&Math.abs(dx)>Math.abs(dy)*1.4;}
-  globalThis.LetterGestures={canStart,intent,forward};
+  globalThis.LetterGestures={canStart};
 })();

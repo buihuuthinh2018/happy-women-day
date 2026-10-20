@@ -1,3 +1,13 @@
+# Bản hiện tại: Swiper đọc thư
+
+- 16 kiểm tra tự động: 13 tình huống nhạc và 3 nhóm kiểm tra vùng bắt đầu cử chỉ. Đã bỏ kiểm tra vuốt trái một chiều vì hành vi mới hỗ trợ cả hai chiều.
+- Edge và WebKit ở 390 × 844, 375 × 667, 320 × 568, 844 × 390, 1280 × 800: track di chuyển ngay trong lúc kéo, vuốt trái/phải chuyển trang, kéo quá ngắn trở về trang hiện tại, không vượt trang đầu/cuối, nút điều hướng, đóng/mở lại, phân trang sau xoay màn hình, không trùng ID và nội dung vừa khung. Không có lỗi JavaScript.
+- Chromium CDP với touch thực: track bám ngón tay trước khi thả, trái tiến/phải lùi, bỏ qua mép và đa chạm; reduced-motion chuyển ngay bằng nút. Đây là cảm ứng trình duyệt giả lập, chưa phải iPhone vật lý.
+- Nhạc MP3 thực vẫn tạm dừng/tiếp tục đúng vị trí, kể cả khi mở thư và rời tab.
+- Swiper 14.3.0 và MIT LICENSE nằm trong dist/vendor; tài nguyên được kiểm tra trước deploy, không phụ thuộc CDN.
+
+# Lịch sử kiểm tra các phiên bản trước
+
 # Kiểm tra phiên bản chuyển cảnh
 
 - `npm run check` chạy thành công: JSON mẫu, cú pháp các file JavaScript, tài nguyên bắt buộc và file nhạc được tham chiếu đều tồn tại.
