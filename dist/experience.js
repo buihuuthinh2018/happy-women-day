@@ -298,7 +298,7 @@ async function prepareGift(data){
 $('retry-loading').addEventListener('click',()=>content?prepareGift(content):boot());
 async function boot(){
   if(!$('welcome').open)$('welcome').showModal();
-  try{const response=await fetch('greeting.json',{signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('JSON unavailable');const data=validate(await response.json());validateExtras(data);defaults=structuredClone(data);await prepareGift(data);}
+  try{const response=await fetch('greeting.json',{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('JSON unavailable');const data=validate(await response.json());validateExtras(data);defaults=structuredClone(data);await prepareGift(data);}
   catch{setText('welcome-title','Món quà chưa tải xong');setText('welcome-description','Kiểm tra kết nối và file greeting.json, rồi thử tải lại nhé.');setText('loading-status','Chưa tải được thông tin lời chúc.');$('retry-loading').hidden=false;$('continue').disabled=true;}
 }
 boot();
