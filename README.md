@@ -55,7 +55,7 @@ Giữ `src` là chuỗi rỗng để dùng giai điệu mẫu tổng hợp bằn
 
 ### Nhạc theo từng khoảnh khắc
 
-Trang dùng bốn pha: `ambient` (cảnh đầu, nến, hoa), `build` (mở thư), `chorus` (trang lời nhắn trọng tâm), `outro` (phần thư sau cao trào và cảnh kết). Nhạc mẫu hiện tại được tạo riêng bằng Web Audio với bốn phối khí; không phải bản thu hoặc bản cover của **Ánh nắng của anh**.
+Trang dùng bốn pha: `ambient` (cảnh đầu, nến, hoa), `build` (mở thư), `chorus` (trang lời nhắn trọng tâm), `outro` (phần thư sau cao trào và cảnh kết). Bản hiện tại dùng **Ánh nắng của anh** từ file MP3 người gửi cung cấp, đã rút gọn còn 67,5 giây (~1,08 MB). Khi để `music.src` trống, trang dùng nhạc mẫu riêng bằng Web Audio với bốn phối khí.
 
 `letter.highlight` thêm một trang lời nhắn riêng sau đoạn thư được chọn; `afterParagraph` đếm từ 0. Ví dụ `1` nghĩa là sau đoạn thứ hai. Trang nhấn được phân trang theo kích thước màn hình, tôn trọng chế độ giảm chuyển động và không ép người xem chờ nhạc mới được chuyển tiếp.
 
@@ -68,13 +68,32 @@ Khi có bản thu được phép sử dụng, đặt file vào `dist/assets/` r�
 
 Các đoạn nền lặp trong lúc chờ người xem. Đoạn `chorus` phát một lần rồi chuyển về `outro`, tránh lặp lại lời hát khi người xem đọc lâu. Vuốt về trang trước sẽ chọn lại pha tương ứng. Thay đổi pha khi đã tắt nhạc chỉ ghi nhận vị trí; không tự bật âm thanh. Nút bật lại phát từ đầu đoạn hiện tại.
 
-`music.cues: null` giữ chế độ phát cả file liên tục (tương thích JSON cũ). Nhạc mẫu không có file vẫn dùng đủ bốn pha. Chưa đặt mốc giây cho Ánh nắng của anh vì chưa có bản thu để đo chính xác.
+`music.cues: null` giữ chế độ phát cả file liên tục (tương thích JSON cũ). Nhạc mẫu không có file vẫn dùng đủ bốn pha.
+
+### Bản cắt đang sử dụng
+
+Các điểm cắt theo lưới nhịp 128 BPM của file nguồn. Chuyển đoạn dùng crossfade 0,9375 giây (hai phách ở 128 BPM), có fade rất ngắn ở mép cắt để tránh tiếng click.
+
+| Pha | Đoạn trong file gốc | Mốc trong MP3 rút gọn |
+| --- | --- | --- |
+| Nền mở đầu | 0:15–0:30 | 0–15 giây |
+| Dẫn khi mở thư | 1:00–1:30 | 15–45 giây |
+| Lời nhắn trọng tâm | 1:52.5–2:07.5 | 45–60 giây |
+| Nền kết | 2:07.5–2:15 | 60–67.5 giây |
+
+Đoạn trọng tâm bao gồm câu hát về nụ cười. File gốc dài khoảng 263,47 giây; không được ghi đè hoặc đưa nguyên bài vào repo. Thông số nguồn nằm trong `music-edit.json`. Để tạo lại bằng Python và FFmpeg:
+
+```sh
+python scripts/prepare-music.py --input "path/to/source.mp3" --ffmpeg "path/to/ffmpeg"
+```
+
+Script chỉ cập nhật đối tượng `music` trong JSON, giữ nguyên tên người nhận và nội dung thư. File xuất có metadata tối giản, không mang toàn bộ lời bài hát hoặc các trường metadata khác từ nguồn.
 
 ### Ghi nguồn cuối lá thư
 
 `music.credit` có `title`, `performer`, `composer`, `sourceUrl`, `note`. Khi `title` có nội dung, cuối thư hiện trang ghi nguồn với liên kết nếu có. Điền thông tin đúng với bản thu thực tế; không ghi tên nghệ sĩ cho nhạc mẫu.
 
-Trang hiện chưa chứa MP3 Ánh nắng của anh. Chỉ tải và đưa vào repo công khai file có quyền sử dụng phù hợp; ghi nguồn không thay thế giấy phép. Bản thu chính thức: https://www.youtube.com/watch?v=-GgTYmhzviw ; tham khảo hướng dẫn của YouTube về việc ghi nguồn: https://support.google.com/youtube/answer/9783148 .
+Trang ghi tên **Đức Phúc** (thể hiện), **Khắc Hưng** (sáng tác) và liên kết nguồn bản lyric **bimm** theo metadata của file người gửi cung cấp. Chỉ đưa vào repo công khai file có quyền sử dụng phù hợp; ghi nguồn không thay thế giấy phép. Tham khảo hướng dẫn của YouTube về việc ghi nguồn: https://support.google.com/youtube/answer/9783148 .
 
 ## Trải nghiệm và truy cập
 

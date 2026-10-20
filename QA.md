@@ -1,6 +1,6 @@
 # Kiểm tra phiên bản chuyển cảnh
 
-- `npm run check` chạy thành công: JSON mẫu, cú pháp hai file JavaScript và tài nguyên bắt buộc tồn tại.
+- `npm run check` chạy thành công: JSON mẫu, cú pháp các file JavaScript, tài nguyên bắt buộc và file nhạc được tham chiếu đều tồn tại.
 - Nhạc theo vị trí đọc có 9 kiểm tra tự động: chọn pha, cấu hình mốc, chuyển âm lượng, chống tải cũ khi vuốt nhanh, giữ trạng thái tắt nhạc, xử lý mốc ngoài file, nhạc mẫu và tương thích JSON cũ.
 - GIF nến được tạo với 36 khung hình 480 × 480, dung lượng khoảng 92 KB, có ảnh tĩnh cho chế độ giảm chuyển động.
 - Cấu hình GitHub Actions chạy lại kiểm tra trước khi deploy thư mục `dist/`.
@@ -13,4 +13,8 @@ Kiểm tra trình duyệt Chromium/Edge trong phiên độc lập, bằng Playwr
 - Một file WAV gốc tạo chỉ cho kiểm thử đã được nạp và giải mã qua đường xử lý bản thu: cắt sang cao trào rồi tự chuyển về đoạn nền sau cao trào.
 - Không có lỗi JavaScript trong các lượt kiểm tra này.
 
-Giới hạn: chưa thử trên iPhone/Safari vật lý. Khi bổ sung MP3 thật, cần đo mốc theo đúng file, kiểm tra điểm cắt nhịp và thử phát nhạc trên thiết bị đích sau nút Tiếp tục. Phiên bản đang dùng nhạc mẫu tạo riêng, không chứa bản thu Ánh nắng của anh.
+MP3 hiện tại được cắt từ file người gửi cung cấp, theo bốn đoạn ở lưới 128 BPM, tổng thời lượng 67,5 giây. Tên hiển thị `Tengg` và lời mở thư `Gửi Tiên…` được giữ từ JSON người gửi đã sửa.
+
+Kiểm tra MP3 thật ở khung 390 × 844: không tự phát trước nút Tiếp tục; giải mã đúng 67,5 giây; mở thư vào pha build; trang nhấn vào mốc 45–60 giây trong bản rút gọn; tự chuyển sang outro; tắt nhạc không bị bật lại khi chuyển trang; trang ghi nguồn hiển thị và liên kết đúng. Không có lỗi JavaScript hoặc lỗi phát nhạc trong lượt này.
+
+Giới hạn: chưa thử trên iPhone/Safari vật lý; cần nghe thử âm lượng trên thiết bị đích. Nhạc chuyển theo thao tác chuyển trang, không theo vị trí mắt người xem.

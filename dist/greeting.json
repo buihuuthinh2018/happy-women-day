@@ -1,5 +1,5 @@
 {
-  "recipient": "Linh",
+  "recipient": "Tengg",
   "sender": "Một người luôn thương em",
   "occasion": "Mừng ngày Phụ nữ Việt Nam",
   "date": "20.10",
@@ -37,7 +37,7 @@
     }
   ],
   "letter": {
-    "salutation": "Gửi Linh, cô gái đặc biệt,",
+    "salutation": "Gửi Tiên, cô gái đặc biệt,",
     "paragraphs": [
       "Hôm nay, cho phép mình gửi em một chút dịu dàng. Không phải điều gì lớn lao, chỉ là vài đóa hoa, một ngọn nến ấm và những lời vẫn luôn muốn nói.",
       "Cảm ơn em vì đã là chính mình. Vì những lần mạnh mẽ dù trong lòng còn nhiều lo lắng, vì nụ cười làm một ngày bình thường bỗng trở nên đáng nhớ. Và vì cả những lúc em cho phép mình yếu mềm — điều đó cũng rất đẹp.",
@@ -52,18 +52,35 @@
   },
   "memories": [],
   "music": {
-    "src": "",
-    "volume": 0.4,
+    "src": "assets/anh-nang-cua-anh-edit.mp3",
+    "volume": 0.5,
     "loop": true,
     "ambientSrc": "",
-    "crossfade": 1.1,
-    "cues": null,
+    "crossfade": 0.9375,
+    "cues": {
+      "ambient": {
+        "start": 0,
+        "end": 15
+      },
+      "build": {
+        "start": 15,
+        "end": 45
+      },
+      "chorus": {
+        "start": 45,
+        "end": 60.0
+      },
+      "outro": {
+        "start": 60.0,
+        "end": 67.5
+      }
+    },
     "credit": {
-      "title": "Giai điệu Nến & Hoa",
-      "performer": "",
-      "composer": "",
-      "sourceUrl": "",
-      "note": "Nhạc mẫu không lời, tạo riêng cho tấm thiệp."
+      "title": "Ánh nắng của anh",
+      "performer": "Đức Phúc",
+      "composer": "Khắc Hưng",
+      "sourceUrl": "https://www.youtube.com/watch?v=3UyotSd-Cp4",
+      "note": "Bản lyric: bimm. Bản nhạc được rút gọn cho thiệp Nến & Hoa."
     }
   }
 }
