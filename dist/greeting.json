@@ -52,35 +52,18 @@
   },
   "memories": [],
   "music": {
-    "src": "assets/anh-nang-cua-anh-edit.mp3",
+    "src": "assets/anh-nang-cua-anh-full.mp3",
     "volume": 0.5,
-    "loop": true,
+    "loop": false,
     "ambientSrc": "",
-    "crossfade": 0.9375,
-    "cues": {
-      "ambient": {
-        "start": 0,
-        "end": 15
-      },
-      "build": {
-        "start": 15,
-        "end": 45
-      },
-      "chorus": {
-        "start": 45,
-        "end": 60.0
-      },
-      "outro": {
-        "start": 60.0,
-        "end": 67.5
-      }
-    },
+    "crossfade": 1.1,
+    "cues": null,
     "credit": {
       "title": "Ánh nắng của anh",
       "performer": "Đức Phúc",
       "composer": "Khắc Hưng",
       "sourceUrl": "https://www.youtube.com/watch?v=3UyotSd-Cp4",
-      "note": "Bản lyric: bimm. Bản nhạc được rút gọn cho thiệp Nến & Hoa."
+      "note": "Bản lyric: bimm. Phát trọn bài từ đầu."
     }
   }
 }

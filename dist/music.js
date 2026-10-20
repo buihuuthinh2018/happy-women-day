@@ -125,7 +125,7 @@
         const segmented=!path||Boolean(this.config.cues);
         const loop=segmented?phase!=='chorus':this.config.loop!==false;
         source.buffer=buffer;source.loop=loop;source.loopStart=start;source.loopEnd=Math.min(end,buffer.duration);
-        const level={ambient:.48,build:.62,chorus:1,outro:.45}[phase];
+        const level=segmented?{ambient:.48,build:.62,chorus:1,outro:.45}[phase]:1;
         gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(level,now+fade);
         source.connect(gain);gain.connect(this.master);
         const voice={source,gain,revision,path,retiring:false};

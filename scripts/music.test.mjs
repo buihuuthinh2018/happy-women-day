@@ -44,5 +44,5 @@ test('original demo has distinct scores and no recording download',async()=>{
   let loaded=false;const f=fixture({config:{src:''},loadBytes:async()=>{loaded=true;}});await f.score.play();const ambient=f.sources[0].buffer;f.score.setCue('chorus');await tick();assert.notEqual(f.sources.at(-1).buffer,ambient);assert.equal(loaded,false);assert.ok(ambient.duration>0);f.score.dispose();
 });
 test('legacy JSON without cue points keeps the full song continuous',async()=>{
-  const f=fixture({config:{src:'a.mp3',loop:false}});await f.score.play();f.score.setCue('build');await tick();f.score.setCue('chorus');await tick();assert.equal(f.sources.length,1);assert.equal(f.score.activePhase,'chorus');f.sources[0].onended();assert.equal(f.score.playing,false);f.score.dispose();
+  const f=fixture({config:{src:'a.mp3',loop:false}});await f.score.play();assert.equal(f.sources[0].offset,0);assert.equal(f.sources[0].loop,false);assert.equal(f.ramps.at(-1).value,1);f.score.setCue('build');await tick();f.score.setCue('chorus');await tick();f.score.setCue('outro');await tick();assert.equal(f.sources.length,1);assert.equal(f.ramps.at(-1).value,1);assert.equal(f.score.activePhase,'outro');f.sources[0].onended();assert.equal(f.score.playing,false);f.score.dispose();
 });

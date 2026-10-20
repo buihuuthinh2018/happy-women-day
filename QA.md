@@ -13,8 +13,8 @@ Kiểm tra trình duyệt Chromium/Edge trong phiên độc lập, bằng Playwr
 - Một file WAV gốc tạo chỉ cho kiểm thử đã được nạp và giải mã qua đường xử lý bản thu: cắt sang cao trào rồi tự chuyển về đoạn nền sau cao trào.
 - Không có lỗi JavaScript trong các lượt kiểm tra này.
 
-MP3 hiện tại được cắt từ file người gửi cung cấp, theo bốn đoạn ở lưới 128 BPM, tổng thời lượng 67,5 giây. Tên hiển thị `Tengg` và lời mở thư `Gửi Tiên…` được giữ từ JSON người gửi đã sửa.
+Bản hiện tại dùng MP3 đầy đủ, sao chép nguyên vẹn từ file người gửi cung cấp (~263,47 giây). Tên hiển thị `Tengg` và lời mở thư `Gửi Tiên…` được giữ nguyên.
 
-Kiểm tra MP3 thật ở khung 390 × 844: không tự phát trước nút Tiếp tục; giải mã đúng 67,5 giây; mở thư vào pha build; trang nhấn vào mốc 45–60 giây trong bản rút gọn; tự chuyển sang outro; tắt nhạc không bị bật lại khi chuyển trang; trang ghi nguồn hiển thị và liên kết đúng. Không có lỗi JavaScript hoặc lỗi phát nhạc trong lượt này.
+Kiểm tra trình duyệt ở khung 390 × 844: không phát trước nút Tiếp tục; bắt đầu đúng giây 0; đi qua các trang thư và cảnh kết vẫn chỉ có một lần khởi tạo nguồn phát; không lặp bài, không nhảy mốc, không đổi âm lượng; nút tắt nhạc hoạt động; không có lỗi JavaScript. Các kiểm tra chuyển đoạn ở trên thuộc engine tùy chọn, không phải cấu hình hiện tại.
 
-Giới hạn: chưa thử trên iPhone/Safari vật lý; cần nghe thử âm lượng trên thiết bị đích. Nhạc chuyển theo thao tác chuyển trang, không theo vị trí mắt người xem.
+Giới hạn: chưa thử trên iPhone/Safari vật lý; cần nghe thử âm lượng trên thiết bị đích.

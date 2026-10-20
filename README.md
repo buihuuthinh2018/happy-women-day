@@ -53,41 +53,15 @@ Ví dụ mục ảnh:
 
 Giữ `src` là chuỗi rỗng để dùng giai điệu mẫu tổng hợp bằng Web Audio. Sau khi tải xong tài nguyên, hộp chào hiện tên từ `recipient` cùng hiệu ứng pháo hoa. Bấm **Tiếp tục** để vào thiệp và bắt đầu phát nhạc theo cơ chế yêu cầu tương tác của trình duyệt. Nút tắt/bật lại nhạc treo ở góc trên; nhạc tự tắt khi rời tab.
 
-### Nhạc theo từng khoảnh khắc
+### Bản nhạc đang sử dụng
 
-Trang dùng bốn pha: `ambient` (cảnh đầu, nến, hoa), `build` (mở thư), `chorus` (trang lời nhắn trọng tâm), `outro` (phần thư sau cao trào và cảnh kết). Bản hiện tại dùng **Ánh nắng của anh** từ file MP3 người gửi cung cấp, đã rút gọn còn 67,5 giây (~1,08 MB). Khi để `music.src` trống, trang dùng nhạc mẫu riêng bằng Web Audio với bốn phối khí.
+Trang dùng bản MP3 đầy đủ **Ánh nắng của anh** do người gửi cung cấp, dài khoảng 4 phút 23 giây (~4,39 MB). File nằm ở `dist/assets/anh-nang-cua-anh-full.mp3` và được sao chép nguyên vẹn từ file gốc.
 
-`letter.highlight` thêm một trang lời nhắn riêng sau đoạn thư được chọn; `afterParagraph` đếm từ 0. Ví dụ `1` nghĩa là sau đoạn thứ hai. Trang nhấn được phân trang theo kích thước màn hình, tôn trọng chế độ giảm chuyển động và không ép người xem chờ nhạc mới được chuyển tiếp.
+Sau loading, người xem bấm **Tiếp tục** để phát từ giây 0. Bài hát chạy liên tục qua các cảnh và các trang thư, giữ nguyên âm lượng, không nhảy đoạn hoặc tự chuyển về nền kết. `music.cues` đặt là `null`, `ambientSrc` để trống và `loop` là `false` để phát một lần trọn bài. Nút tắt/bật nhạc và việc tự tắt khi rời tab vẫn hoạt động; bấm bật lại sẽ phát lại bài từ đầu.
 
-Khi có bản thu được phép sử dụng, đặt file vào `dist/assets/` rồi cấu hình:
+`letter.highlight` vẫn giữ trang lời nhắn riêng và hiệu ứng chữ. Trang này không điều khiển vị trí nhạc trong cấu hình hiện tại.
 
-- `music.src`: file bản thu chính.
-- `music.ambientSrc`: file không lời dùng làm nền ở các cảnh đầu; để trống để dùng cùng `src`.
-- `music.cues`: bốn khóa `ambient`, `build`, `chorus`, `outro`, mỗi khóa có `start` và `end` tính bằng giây. Mốc của `ambient` tính trong `ambientSrc` khi có file này; ba mốc còn lại tính trong `src`.
-- `music.crossfade`: thời gian chuyển âm lượng giữa hai đoạn (0.15–4 giây), mặc định 1.1 giây. Điểm cắt cần chọn theo nhịp và theo đúng phiên bản bản thu; hệ thống không tự phát hiện điệp khúc.
-
-Các đoạn nền lặp trong lúc chờ người xem. Đoạn `chorus` phát một lần rồi chuyển về `outro`, tránh lặp lại lời hát khi người xem đọc lâu. Vuốt về trang trước sẽ chọn lại pha tương ứng. Thay đổi pha khi đã tắt nhạc chỉ ghi nhận vị trí; không tự bật âm thanh. Nút bật lại phát từ đầu đoạn hiện tại.
-
-`music.cues: null` giữ chế độ phát cả file liên tục (tương thích JSON cũ). Nhạc mẫu không có file vẫn dùng đủ bốn pha.
-
-### Bản cắt đang sử dụng
-
-Các điểm cắt theo lưới nhịp 128 BPM của file nguồn. Chuyển đoạn dùng crossfade 0,9375 giây (hai phách ở 128 BPM), có fade rất ngắn ở mép cắt để tránh tiếng click.
-
-| Pha | Đoạn trong file gốc | Mốc trong MP3 rút gọn |
-| --- | --- | --- |
-| Nền mở đầu | 0:15–0:30 | 0–15 giây |
-| Dẫn khi mở thư | 1:00–1:30 | 15–45 giây |
-| Lời nhắn trọng tâm | 1:52.5–2:07.5 | 45–60 giây |
-| Nền kết | 2:07.5–2:15 | 60–67.5 giây |
-
-Đoạn trọng tâm bao gồm câu hát về nụ cười. File gốc dài khoảng 263,47 giây; không được ghi đè hoặc đưa nguyên bài vào repo. Thông số nguồn nằm trong `music-edit.json`. Để tạo lại bằng Python và FFmpeg:
-
-```sh
-python scripts/prepare-music.py --input "path/to/source.mp3" --ffmpeg "path/to/ffmpeg"
-```
-
-Script chỉ cập nhật đối tượng `music` trong JSON, giữ nguyên tên người nhận và nội dung thư. File xuất có metadata tối giản, không mang toàn bộ lời bài hát hoặc các trường metadata khác từ nguồn.
+Nếu cần thay file, cập nhật `music.src`. Để `src` trống sẽ dùng nhạc mẫu Web Audio. Engine vẫn hỗ trợ cấu hình bốn pha `ambient`, `build`, `chorus`, `outro` khi cung cấp `music.cues`, nhưng bản triển khai hiện tại không sử dụng chế độ đó.
 
 ### Ghi nguồn cuối lá thư
 
