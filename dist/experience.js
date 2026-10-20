@@ -111,7 +111,7 @@ function buildReaderPages(paragraphs){
   }
   return pages;
 }
-function openReader(kind,title,paragraphs){
+function openReader(kind,title,paragraphs,origin=null){
   cancelReaderMotion();
   readerKind=kind;readerHeading=title;readerParagraphs=paragraphs;readerClosing=kind==='letter'?content.letter.closing:'';
   setText('reader-title',title);setText('reader-eyebrow',kind==='letter'?'MỘT LÁ THƯ NGÀY 20/10':'MỘT ĐÓA HOA · MỘT LỜI THƯƠNG');
@@ -119,9 +119,15 @@ function openReader(kind,title,paragraphs){
   setText('reader-signature',kind==='letter'?`${readerClosing}\n${content.sender}`:'Với tất cả yêu thương ♡');
   $('reader').classList.toggle('is-letter',kind==='letter');
   $('reader').showModal();readerPages=buildReaderPages(paragraphs);readerIndex=0;showReaderPage();
+  $('envelope').classList.toggle('is-empty',kind==='letter');
   if(!reducedMotion){
     readerBusy=true;updateReaderNavigation();
-    const animation=$('reader-paper').animate([{transform:'perspective(1100px) rotateX(-34deg) scale(.94)',opacity:.3},{transform:'perspective(1100px) rotateX(3deg) scale(1)',opacity:1,offset:.75},{transform:'none',opacity:1}],{duration:680,easing:'cubic-bezier(.2,.75,.2,1)'});
+    const reader=$('reader'),target=reader.getBoundingClientRect();
+    reader.classList.add('is-lifting');
+    const from=origin?`translate3d(${origin.left-target.left}px,${origin.top-target.top}px,0) scale(${origin.width/target.width},${origin.height/target.height})`:'translate3d(0,24px,0) scale(.96)';
+    // Continue from the extracted sheet's on-screen rectangle, with no reset
+    // between the envelope and the modal in the browser's top layer.
+    const animation=reader.querySelector('.reader-surface').animate([{transform:from,opacity:origin?1:.3},{transform:'translate3d(0,0,0) scale(1)',opacity:1}],{duration:origin?760:380,easing:'cubic-bezier(.22,.65,.28,1)'});
     trackReaderMotion(animation);
   }
 }
@@ -153,7 +159,11 @@ function openLetter(){
   if(envelopeTimer!==null||$('reader').open)return;
   if(reducedMotion){openReader('letter',content.letter.salutation,content.letter.paragraphs);return;}
   $('envelope').classList.add('is-opening');$('envelope').disabled=true;$('open-letter').disabled=true;
-  envelopeTimer=setTimeout(()=>{cancelEnvelopeOpening();openReader('letter',content.letter.salutation,content.letter.paragraphs);petals(8);},360);
+  envelopeTimer=setTimeout(()=>{
+    const origin=$('envelope').querySelector('.envelope-paper').getBoundingClientRect();
+    openReader('letter',content.letter.salutation,content.letter.paragraphs,origin);
+    cancelEnvelopeOpening();petals(8);
+  },560);
 }
 $('open-letter').addEventListener('click',openLetter);$('envelope').addEventListener('click',openLetter);
 function updateReaderNavigation(){
@@ -162,13 +172,14 @@ function updateReaderNavigation(){
 function cancelReaderMotion(){
   const motion=readerMotion;readerMotion=null;readerBusy=false;
   if(motion){motion.animation.cancel();motion.sheet?.remove();}
+  $('reader').classList.remove('is-lifting');
   readerTouch=null;
 }
 function trackReaderMotion(animation,sheet){
   const motion={animation,sheet};readerMotion=motion;
   const finish=()=>{
     sheet?.remove();if(readerMotion!==motion)return;
-    readerMotion=null;readerBusy=false;updateReaderNavigation();
+    readerMotion=null;readerBusy=false;$('reader').classList.remove('is-lifting');updateReaderNavigation();
   };
   animation.finished.then(finish,finish);
 }
@@ -195,16 +206,21 @@ function turnReaderPage(direction){
   readerBusy=!reducedMotion;readerIndex=next;showReaderPage();
   $('reader-title').focus({preventScroll:true});
   if(sheet){
-    $('reader').append(sheet);sheet.style.transformOrigin=direction>0?'left center':'right center';
-    const angle=direction>0?-168:168;
-    const animation=sheet.animate([{transform:'rotateY(0deg)'},{transform:`rotateY(${angle*.48}deg)`,offset:.5},{transform:`rotateY(${angle}deg)`}],{duration:700,easing:'cubic-bezier(.3,.15,.2,1)',fill:'forwards'});
+    $('reader').querySelector('.reader-surface').append(sheet);sheet.style.transformOrigin=direction>0?'left center':'right center';
+    const sign=direction>0?-1:1;
+    // One uninterrupted movement: the old page leaves while the new page is
+    // already underneath. Fade before the back face could linger in view.
+    const animation=sheet.animate([
+      {transform:'translate3d(0,0,0) rotateY(0deg)',opacity:1},
+      {transform:`translate3d(${sign*26}%,0,0) rotateY(${sign*105}deg)`,opacity:0}
+    ],{duration:460,easing:'cubic-bezier(.22,.6,.3,1)',fill:'forwards'});
     trackReaderMotion(animation,sheet);
   }
   return true;
 }
 $('reader-prev').addEventListener('click',()=>turnReaderPage(-1));$('reader-next').addEventListener('click',()=>turnReaderPage(1));
 $('close-reader').addEventListener('click',()=>{cancelReaderMotion();$('reader').close();});
-$('reader').addEventListener('close',()=>{cancelReaderMotion();score?.setCue(GreetingAudio.phaseFor(scenes[sceneIndex]?.id));});
+$('reader').addEventListener('close',()=>{cancelReaderMotion();$('envelope').classList.remove('is-empty');score?.setCue(GreetingAudio.phaseFor(scenes[sceneIndex]?.id));});
 $('reader').addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();$('reader-next').click();}else if(e.key==='ArrowLeft'){e.preventDefault();$('reader-prev').click();}});
 let readerTouch;
 function startReaderSwipe(x,y,id,target,touches=1){

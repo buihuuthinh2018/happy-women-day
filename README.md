@@ -75,7 +75,7 @@ Trang ghi tên **Đức Phúc** (thể hiện), **Khắc Hưng** (sáng tác) v�
 - Thắp/tắt nến GIF, chọn hoa để mở lời nhắn, thư chia trang theo kích thước hiển thị. Không cuộn nội dung giữa các cảnh.
 - Hộp thư hỗ trợ Escape, phím mũi tên, nút Trang trước/Trang sau và vuốt trái ở giữa tờ giấy để đi tiếp. Vuốt phải không quay trang; dùng nút Trang trước để tránh trùng thao tác điều hướng của iPhone.
 - Không nhận vuốt bắt đầu ở mép màn hình (44 px), vùng đáy (88 px), trên nút/liên kết, khi đang phóng to hoặc chạm nhiều ngón. Cử chỉ hệ thống vẫn do iOS quản lý; trang web không vô hiệu hóa chuyển ứng dụng hoặc điều hướng từ mép màn hình.
-- Phong bì mở nắp rồi tờ thư hiện ra; chuyển trang có hiệu ứng giấy lật 3D, mặt sau và bóng đổ. Trong lúc lật chỉ nhận một lần chuyển; nút âm thanh và đóng thư vẫn hoạt động. Đóng hoặc đổi kích thước sẽ dọn lớp hiệu ứng.
+- Tờ thư hé sẵn khỏi phong bì; chạm mở để kéo giấy ra trong 560 ms rồi phóng lớn từ đúng vị trí tờ giấy vào vùng đọc trong 760 ms. Chuyển trang là một chuyển động giấy nghiêng và rời đi liên tục trong 460 ms, không giữ mặt sau ở cuối hiệu ứng. Nền tối đứng yên, chỉ tờ giấy chuyển động. Trong lúc lật chỉ nhận một lần chuyển; nút âm thanh và đóng thư vẫn hoạt động. Đóng hoặc đổi kích thước sẽ dọn lớp hiệu ứng.
 - Cảnh không hoạt động được ẩn với trình đọc màn hình và không nhận focus. Tham khảo cơ chế cử chỉ trình duyệt: [MDN touch-action](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action).
 - Tôn trọng `prefers-reduced-motion`, hỗ trợ bàn phím, nhãn cho trình đọc màn hình.
 - Font Google Fonts có font hệ thống dự phòng; tài nguyên nội dung và ảnh chính nằm trong source.

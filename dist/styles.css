@@ -21,8 +21,15 @@
 @media(orientation:landscape) and (max-height:550px){.reader{padding-top:48px}.reader-sound{top:5px;min-height:30px}}
 
 /* The paper turns independently; controls stay still and clear of iPhone edges. */
-.reader{perspective:1400px;overscroll-behavior-x:contain;isolation:isolate}
+.reader{overscroll-behavior-x:contain;isolation:isolate}
 .reader[open]{animation:none}
+.reader::backdrop{backdrop-filter:none}
+.reader,.reader.is-highlight{background:transparent;border:0;box-shadow:none;overflow:visible}
+.reader-surface{position:absolute;inset:0;display:flex;flex-direction:column;gap:inherit;padding:inherit;background:#f9f4e8;border:1px solid #cfbda4;box-shadow:0 20px 100px #0004;overflow:hidden;perspective:1400px;transform-origin:top left}
+.reader.is-highlight .reader-surface{background:radial-gradient(ellipse at 50% 35%,#fff8e9,#f1e2d5);border-color:#bd8b8c}
+.reader.is-lifting .reader-surface{will-change:transform,opacity}
+.reader.is-lifting .reader-footer,.reader.is-lifting .reader-sound,.reader.is-lifting .dialog-close{animation:letter-controls .76s ease both}
+@keyframes letter-controls{0%,45%{opacity:0}100%{opacity:1}}
 .reader-paper{display:flex;flex:1;min-height:0;flex-direction:column;gap:13px;position:relative;transform-origin:center top;touch-action:pan-y pinch-zoom}
 .reader-footer{flex-shrink:0;position:relative;z-index:6}
 .reader-footer .inline-pager{gap:8px}
@@ -37,11 +44,17 @@
 .envelope{perspective:850px}
 .envelope::before{content:'';position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 52%);background:linear-gradient(#d5b39b,#e3c7af);z-index:4;transform-origin:center top;backface-visibility:hidden;transition:transform .5s ease}
 .envelope.is-opening::before{transform:rotateX(170deg)}
-.envelope .envelope-paper{transition:transform .5s ease}
-.envelope.is-opening .envelope-paper{transform:translateY(-36px) rotate(4deg)}
+.envelope .envelope-paper{inset:-52px 22px 30px;transition:transform .56s cubic-bezier(.3,.55,.3,1);will-change:auto}
+.envelope.is-opening .envelope-paper{transform:translateY(-70%) rotate(4deg);will-change:transform}
 .envelope .wax-seal{z-index:5;transition:opacity .25s,transform .3s}
 .envelope.is-opening .wax-seal{opacity:0;transform:scale(.8)}
 .envelope:disabled{opacity:1}
+.envelope.is-empty .envelope-paper{visibility:hidden}
+.envelope{margin-top:40px}
 @media(max-width:720px){.reader-paper{gap:12px}.reader-footer .inline-pager button span{font-size:9px}#reader-hint{font-size:7px}}
+@media(max-width:720px){.envelope{margin-top:47px}}
+@media(max-height:720px) and (max-width:720px){.envelope .envelope-paper{inset:-40px 18px 24px}}
+@media(max-height:720px) and (max-width:720px){.envelope{margin-top:45px}}
 @media(max-height:720px) and (max-width:720px){.reader-paper{gap:8px}#reader-hint{font-size:6px}.reader-footer .inline-pager button span{font-size:8px}}
 @media(orientation:landscape) and (max-height:550px){.reader-paper{gap:5px}#reader-hint{font-size:6px;line-height:1.3}.reader-footer .inline-pager{min-height:34px}.reader-footer .inline-pager button{min-height:34px}}
+@media(orientation:landscape) and (max-height:550px){.envelope{margin-top:22px}}

@@ -27,3 +27,7 @@ Giới hạn: chưa thử trên iPhone/Safari vật lý; không thể kiểm th�
 Cập nhật tiếp tục nhạc: tổng cộng 19 kiểm tra tự động đã qua, gồm tiếp tục tại vị trí dừng qua nhiều lần bật/tắt, chuyển cảnh khi tạm dừng, vị trí vòng lặp, thời gian còn lại gần cuối bài, không phát lại bài đã kết thúc và bật/tắt trong lúc đang giải mã.
 
 Kiểm tra MP3 thực bằng Chromium/Edge tại 390 × 844: tạm dừng ở 1,56 giây, mở thư khi đang dừng rồi bật lại từ đúng 1,56 giây; dừng lần hai và bật từ nút ngoài thư vẫn giữ vị trí. Sự kiện ẩn tab được mô phỏng để kiểm tra tạm dừng/tiếp tục; tải lại trang phát từ giây 0. Không có lỗi JavaScript. Chưa xác nhận hành vi âm thanh trên iPhone vật lý.
+
+Cập nhật chuyển động lá thư: tờ giấy hé khỏi phong bì, có khoảng cách với lời dẫn ở màn hình 320 × 568 trở lên. Kéo giấy ra 560 ms rồi phóng lớn từ hình chữ nhật thực của tờ giấy vào vùng đọc 760 ms. Bề mặt giấy chuyển động riêng, nền hộp đọc đứng yên. Lật trang 460 ms với hai keyframe liên tục; lớp giấy cũ mờ dần và được dọn khi kết thúc, không giữ mặt sau.
+
+Đã kiểm tra lại Edge và WebKit ở 390 × 844, 375 × 667, 320 × 568, 844 × 390 và 1280 × 800: phân trang vừa vùng đọc, chỉ tiến một trang mỗi lần vuốt, nút quay lại, bảo vệ mép/đáy iPhone, đóng giữa hiệu ứng, mở lại và reduced-motion. Kiểm tra riêng tọa độ bắt đầu phóng lớn trùng vị trí giấy vừa kéo ra; kiểm tra nhạc tạm dừng/tiếp tục vẫn qua. Các lượt trình duyệt không có lỗi JavaScript; chưa xác nhận độ mượt trên iPhone vật lý.
