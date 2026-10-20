@@ -4,6 +4,7 @@ const data = JSON.parse(await readFile('dist/greeting.json','utf8'));
 if (!data.recipient || !Array.isArray(data.letter.paragraphs) || data.wishes.length !== 3) throw Error('Invalid default content');
 new vm.Script(await readFile('dist/app.js', 'utf8'));
 new vm.Script(await readFile('dist/music.js', 'utf8'));
+new vm.Script(await readFile('dist/letter-gestures.js', 'utf8'));
 new vm.Script(await readFile('dist/experience.js', 'utf8'));
 const musicContext={setTimeout,clearTimeout};
 vm.runInNewContext(await readFile('dist/music.js','utf8'),musicContext);
