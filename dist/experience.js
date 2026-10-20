@@ -19,8 +19,31 @@ function render(data){
     button.addEventListener('click',()=>{openReader('wish',wish.title,[wish.message]);petals(5);});return button;
   }));
   $('memories').hidden=!(data.memories?.length);memoryIndex=0;if(data.memories?.length)showMemory(0);
-  refreshScenes();goScene(0,true);
+  refreshScenes();goScene(0,true);restoreLuckyEnvelope();
 }
+let luckyBusy=false;
+function showLuckyEnvelope(result){
+  const opened=Boolean(result),button=$('lucky-envelope');
+  button.classList.toggle('is-open',opened);button.setAttribute('aria-pressed',String(opened));
+  const amount=opened?new Intl.NumberFormat('vi-VN').format(result.amount)+'đ':'';
+  setText('lucky-amount',amount);setText('lucky-hint',opened?`Em nhận được ${amount} ♡`:'Chạm mở lì xì · Một chút may mắn cho em');
+  button.setAttribute('aria-label',opened?`Bao lì xì đã mở: ${amount}`:'Mở bao lì xì may mắn');
+}
+function restoreLuckyEnvelope(){
+  try{showLuckyEnvelope(LuckyEnvelope.create(localStorage).read());}catch{showLuckyEnvelope(null);}
+}
+$('lucky-envelope').addEventListener('click',async()=>{
+  if(luckyBusy)return;luckyBusy=true;
+  try{
+    const claim=()=>LuckyEnvelope.create(localStorage).open();
+    // Serialize claims across tabs when Web Locks is available.
+    const result=navigator.locks?await navigator.locks.request(LuckyEnvelope.KEY,claim):claim();
+    const first=!$('lucky-envelope').classList.contains('is-open');showLuckyEnvelope(result);
+    if(first){petals(18);navigator.vibrate?.([30,50,30]);}
+  }catch{notify('Chưa lưu được lì xì. Em hãy cho phép trình duyệt lưu dữ liệu rồi thử lại nhé.');}
+  finally{luckyBusy=false;}
+});
+window.addEventListener('storage',event=>{if(event.key===LuckyEnvelope.KEY)restoreLuckyEnvelope();});
 function refreshScenes(){
   scenes=[...document.querySelectorAll('.scene')].filter(el=>!el.hidden);
   $('scene-dots').replaceChildren(...scenes.map((scene,i)=>{const b=document.createElement('button');b.setAttribute('aria-label',`Cảnh ${i+1}: ${sceneNames[scene.id]}`);b.addEventListener('click',()=>goScene(i));return b;}));

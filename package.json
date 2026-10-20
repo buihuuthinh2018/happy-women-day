@@ -7,6 +7,6 @@
     "dev": "node scripts/serve.mjs",
     "start": "node scripts/serve.mjs",
     "build": "npm run check",
-    "check": "node scripts/check.mjs && node --test scripts/music.test.mjs scripts/letter-gestures.test.mjs"
+    "check": "node scripts/check.mjs && node --test scripts/music.test.mjs scripts/letter-gestures.test.mjs scripts/lucky-envelope.test.mjs"
   }
 }

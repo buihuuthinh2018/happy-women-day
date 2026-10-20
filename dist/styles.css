@@ -56,3 +56,18 @@
 @media(max-height:720px) and (max-width:720px){.reader-paper{gap:8px}#reader-hint{font-size:6px}.reader-footer .inline-pager button span{font-size:8px}}
 @media(orientation:landscape) and (max-height:550px){.reader-paper{gap:5px}#reader-hint{font-size:6px;line-height:1.3}.reader-footer .inline-pager{min-height:34px}.reader-footer .inline-pager button{min-height:34px}}
 @media(orientation:landscape) and (max-height:550px){.envelope{margin-top:22px}}
+/* A keepsake lucky envelope, with the saved amount on a little ivory card. */
+.closing{gap:10px}.closing>.closing-flower{display:none}
+.lucky-gift{padding-top:30px;flex-shrink:0;text-align:center}
+.lucky-envelope{position:relative;display:block;width:162px;height:106px;margin:0 auto;padding:0;isolation:isolate;perspective:700px}
+.lucky-card{position:absolute;inset:0 12px 10px;background:#fff4d8;color:#713b47;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid #d5ad68;border-radius:4px;transform:translateY(9px);transition:transform .65s cubic-bezier(.2,.7,.25,1);box-shadow:0 4px 12px #63313c22;z-index:1}
+.lucky-card-label{font:7px var(--sans);letter-spacing:1px}.lucky-card strong{font:25px/1.4 var(--serif)}
+.lucky-pocket{position:absolute;inset:0;border-radius:5px 5px 10px 10px;background:linear-gradient(145deg,#9f4b55,#713b47);border:1px solid #b88569;box-shadow:0 8px 22px #713b4726;z-index:2}
+.lucky-pocket::after{content:'';position:absolute;inset:8px;border:1px solid #d8b47a66;border-radius:3px 3px 6px 6px}
+.lucky-flap{position:absolute;inset:0 0 44%;background:linear-gradient(150deg,#ad6067,#813b48);clip-path:polygon(0 0,100% 0,100% 20%,50% 100%,0 20%);transform-origin:center top;transition:transform .5s ease;backface-visibility:hidden;z-index:4}
+.lucky-seal{position:absolute;top:34%;left:calc(50% - 17px);width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#dfbd83;color:#713b47;font:20px Georgia;box-shadow:0 2px 8px #51293244;z-index:5;transition:opacity .25s}
+.lucky-envelope.is-open .lucky-flap{transform:rotateX(175deg)}.lucky-envelope.is-open .lucky-seal{opacity:0}
+.lucky-envelope.is-open .lucky-card{transform:translateY(-27px);z-index:3}
+.lucky-hint{font-size:9px;color:var(--wine);line-height:1.6;margin-top:9px;min-height:15px}
+@media(max-height:720px) and (max-width:720px){.closing{gap:6px}.closing h2{font-size:20px;line-height:1.3}.closing .signature{font-size:10px;line-height:1.6}.closing>.description{font-size:9px}.closing>.year{display:none}.closing>.text-link{min-height:28px;padding:3px 0;font-size:10px}.closing>.customize-link{min-height:22px}.lucky-gift{padding-top:28px}.lucky-envelope{width:138px;height:74px}.lucky-card{inset:0 10px 3px;gap:0}.lucky-card-label{font-size:6px}.lucky-card strong{font-size:22px}.lucky-card>span:last-child{font-size:10px}.lucky-hint{font-size:8px;margin-top:4px;min-height:13px}.lucky-seal{width:28px;height:28px;left:calc(50% - 14px);font-size:17px}}
+@media(orientation:landscape) and (max-height:550px){.closing{padding-right:43%;gap:6px}.closing h2{font-size:22px;line-height:1.35}.closing .lucky-gift{position:absolute;right:8%;top:50%;transform:translateY(-50%);width:31%;padding-top:28px}.lucky-hint{font-size:8px}.lucky-envelope{width:145px;height:95px}}

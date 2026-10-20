@@ -6,6 +6,7 @@ new vm.Script(await readFile('dist/app.js', 'utf8'));
 new vm.Script(await readFile('dist/music.js', 'utf8'));
 new vm.Script(await readFile('dist/letter-gestures.js', 'utf8'));
 new vm.Script(await readFile('dist/experience.js', 'utf8'));
+new vm.Script(await readFile('dist/lucky-envelope.js', 'utf8'));
 const musicContext={setTimeout,clearTimeout};
 vm.runInNewContext(await readFile('dist/music.js','utf8'),musicContext);
 musicContext.GreetingAudio.validateMusic(data.music);

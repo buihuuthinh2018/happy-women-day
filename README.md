@@ -80,6 +80,12 @@ Trang ghi tên **Đức Phúc** (thể hiện), **Khắc Hưng** (sáng tác) v�
 - Tôn trọng `prefers-reduced-motion`, hỗ trợ bàn phím, nhãn cho trình đọc màn hình.
 - Font Google Fonts có font hệ thống dự phòng; tài nguyên nội dung và ảnh chính nằm trong source.
 
+## Bao lì xì ở trang cuối
+
+Chạm bao lì xì để nhận một trong 100 mức tiền từ **100.000đ đến 199.000đ**, bước 1.000đ. Dùng `crypto.getRandomValues`; kết quả được lưu trước khi hiển thị vào `localStorage` với khóa `happy-women-day:lucky-envelope:v1`. Bấm lại, đổi cảnh, tải lại hoặc mở lại trang trên cùng trình duyệt đều giữ nguyên số tiền. Web Locks đồng bộ lượt mở giữa các tab khi trình duyệt hỗ trợ; các tab cập nhật giao diện qua sự kiện storage.
+
+Đây là giới hạn trên cùng trình duyệt và origin: xóa dữ liệu trang, dùng trình duyệt/thiết bị khác hoặc phiên riêng tư mới có bộ nhớ riêng. Khi không thể lưu, trang báo lỗi và chưa hiển thị kết quả để tránh cho bốc lại sau lỗi lưu. Kết quả không tự đặt lại khi nhập JSON khác hay deploy bản mới. Không có backend hoặc thao tác chuyển tiền.
+
 ## Ảnh concept
 
 `dist/assets/candles-roses.webp`: tạo bằng công cụ ImageGen tích hợp, tối ưu WebP cho web. Prompt: “Photorealistic romantic editorial still-life, blush garden roses, three ivory taper candles in vintage brass holders, deep espresso background, antique ivory cloth and scattered petals, warm candlelight, soft film grain, portrait 4:5, no people, no text, no logos.”

@@ -1,3 +1,9 @@
+# Bản hiện tại: bao lì xì một lần
+
+- 21 kiểm tra tự động đã qua, trong đó 5 kiểm tra mới xác nhận lưu kết quả qua nhiều instance, đủ 100 mức tiền gồm hai đầu 100k/199k, loại bỏ sai lệch modulo, không hiển thị kết quả nếu lưu thất bại và không bốc lại khi dữ liệu cũ bị lỗi.
+- Edge và WebKit tại 390 × 844, 375 × 667, 320 × 568, 844 × 390, 1280 × 800: trang cuối vừa giữa header và điều hướng, mở bao đúng khoảng tiền, bấm lại/tải lại giữ kết quả, không có lỗi JavaScript. Hai tab mở cùng lúc nhận cùng kết quả trong cùng browser context.
+- Chặn Storage.setItem: không hiển thị số tiền, giữ trạng thái chưa mở và thông báo lỗi lưu. Bao mở dùng transform, tôn trọng prefers-reduced-motion. Chưa thử iPhone vật lý.
+
 # Bản hiện tại: Swiper đọc thư
 
 - 16 kiểm tra tự động: 13 tình huống nhạc và 3 nhóm kiểm tra vùng bắt đầu cử chỉ. Đã bỏ kiểm tra vuốt trái một chiều vì hành vi mới hỗ trợ cả hai chiều.
